@@ -163,56 +163,58 @@ public class NuevoPerfil extends JFrame {
 				
 				añadirNuevaAgencia();
 							}
-
 			private void añadirNuevaAgencia() {
-			    //// TODO Auto-generated method stub			
-				//Nombre 
-				String agenNuevo= lbl_nombreAgencia.getText().trim();
-				//Color ---					
-				//Numero de Empleados
-				String numEmp = comboBox_empleados.getSelectedItem().toString();
-				//Tipo de Agencia
-				String tipoAgen = comboBox_tipoAgencia.getSelectedItem().toString();
-				//Contraseña
-				String contr = new String(passwordField.getPassword());
-				//Logo
-				String urlLogo =  textField_logo.getText().trim();
-				ImageIcon logo = new ImageIcon(urlLogo);	
-				
-			   
+			    // Obtener valores del formulario
+			    String agenNuevo = textfield_nombre.getText().trim();  // Nombre de la agencia
+			    String numEmpStr = comboBox_empleados.getSelectedItem().toString();
+			    int numEmp = 0; // Valor por defecto si no se selecciona nada
 
-			    // Verificar campos vacíos
-			    if (agenNuevo.isEmpty() || numEmp.isEmpty() || tipoAgen.isEmpty() || contr.isEmpty() || colorSeleccionado == null) {
+			    // Convertir número de empleados
+			    if (numEmpStr.contains("2 y 10")) {
+			        numEmp = 2;
+			    } else if (numEmpStr.contains("10 y 100")) {
+			        numEmp = 10;
+			    } else if (numEmpStr.contains("100 y 1000")) {
+			        numEmp = 100;
+			    }
+
+			    String tipoAgen = comboBox_tipoAgencia.getSelectedItem().toString();  // Tipo de agencia
+			    String contr = new String(passwordField.getPassword());  // Contraseña
+			    String urlLogo = textField_logo.getText().trim();  // URL del logo
+
+			    // Validación de campos obligatorios
+			    if (agenNuevo.isEmpty() || numEmp == 0 || tipoAgen.isEmpty() || contr.isEmpty() || colorSeleccionado == null) {
 			        JOptionPane.showMessageDialog(panel, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
 			        return;
 			    }
 
-			    // Configuración para la base de datos
 			    Connection conexion = null;
 			    PreparedStatement sentencia = null;
 
 			    try {
-			        // Establecer conexión
-			        Class.forName(BDUtils.DRIVER); // Controlador de la base de datos
+			        // Conexión a la base de datos
+			        Class.forName(BDUtils.DRIVER);
 			        conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
 
-			        // Preparar la consulta SQL
-			        String sql = SQLQueries.INSERT_NUEVA_AGENCIA; // Definir la consulta en SQLQueries (por ejemplo: INSERT INTO agencias ...)
+			        // Consulta SQL
+			        String sql = SQLQueries.INSERT_NUEVA_AGENCIA;
 			        sentencia = conexion.prepareStatement(sql);
 
-			        // Establecer los parámetros en la consulta preparada
-			        sentencia.setString(1, agenNuevo); // Nombre de la agencia
-			        sentencia.setString(2, numEmp); // Número de empleados
-			        sentencia.setString(3, tipoAgen); // Tipo de agencia
-			        sentencia.setString(4, contr); // Contraseña
-			        sentencia.setString(5, "#" + Integer.toHexString(colorSeleccionado.getRGB()).substring(2)); // Color en hexadecimal
-			        sentencia.setString(6, urlLogo); // URL del logo
+			        // Asignar parámetros a la consulta
+			        sentencia.setString(1, agenNuevo);  // Nombre
+			        sentencia.setString(2, urlLogo);  // Logo
+			        sentencia.setString(3, "#" + Integer.toHexString(colorSeleccionado.getRGB()).substring(2)); // Color en hexadecimal
+			        sentencia.setInt(4, numEmp);  // Número de empleados (cambio de setString() a setInt())
+			        sentencia.setString(5, tipoAgen);  // Tipo de agencia
+			        sentencia.setString(6, contr);  // Contraseña
 
 			        // Ejecutar la consulta
 			        int datosInsertados = sentencia.executeUpdate();
 
 			        if (datosInsertados > 0) {
 			            JOptionPane.showMessageDialog(panel, "Agencia añadida correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+			            setVisible(false);
+			          llamarViajesyEventos();
 			        } else {
 			            JOptionPane.showMessageDialog(panel, "No se pudo añadir la agencia.", "Error", JOptionPane.ERROR_MESSAGE);
 			        }
@@ -233,6 +235,13 @@ public class NuevoPerfil extends JFrame {
 			        }
 			    }
 			}
+			private void llamarViajesyEventos() {
+				// TODO Auto-generated method stub
+				ViajesyEventos ViajesyEventos = new ViajesyEventos(Login);
+				setVisible(false);
+				ViajesyEventos.setVisible(true);
+			}
+
 
 		});
 		btn_guardar.setBounds(208, 300, 89, 23);

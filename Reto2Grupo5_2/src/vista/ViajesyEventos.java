@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JFormattedTextField;
 
 public class ViajesyEventos extends JFrame {
 
@@ -21,7 +22,7 @@ public class ViajesyEventos extends JFrame {
     /**
      * Create the frame.
      */
-    public ViajesyEventos(Login Login) {
+    public ViajesyEventos(Login login) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 982, 625);
         contentPane = new JPanel();
@@ -48,13 +49,13 @@ public class ViajesyEventos extends JFrame {
                 panel.add(btn_gestionarClientes);
                 
                 JButton btn_desconectar = new JButton("Desconectar");
+                btn_desconectar.setBounds(729, 510, 134, 23);
                 btn_desconectar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         // volver a la pagina de bienvenida
                         llamarBienvenida();
                     }
                 });
-                btn_desconectar.setBounds(729, 510, 134, 23);
                 panel.add(btn_desconectar);
                 
                 JLabel lbl_viajes = new JLabel("Viajes");
@@ -94,5 +95,4 @@ public class ViajesyEventos extends JFrame {
         setVisible(false);
         Bienvenida.setVisible(true);
     }
-   
 }
