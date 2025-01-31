@@ -166,7 +166,7 @@ public class Login extends JFrame {
 	}
 	
 	 public void llamarViajesyEventos() {
-	        ViajesyEventos ViajesyEventos = new ViajesyEventos(this);
+	        ViajesyEventos ViajesyEventos = new ViajesyEventos();
 	        setVisible(false);
 	        ViajesyEventos.setVisible(true);
 	}

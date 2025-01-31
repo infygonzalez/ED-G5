@@ -1,64 +1,51 @@
 package modelo_Pojos;
 
-public class Alojamiento {
+public class Alojamiento  extends Evento{
 	
-	private String nombreEvento;
-    private String tipoHabitacion; // "Doble", "Individual" o "Triple"
+	private String nombreHotel;
     private String ciudad;
-    private String fechaEntrada; // Formato de fecha
-    private String fechaSalida; // Formato de fecha
-    private double precio;
+    private String tipoHabitacion;
     
-	public Alojamiento(String nombreEvento, String tipoHabitacion, String ciudad, String fechaEntrada,
-			String fechaSalida, double precio) {
-		super();
-		this.nombreEvento = nombreEvento;
-		this.tipoHabitacion = tipoHabitacion;
-		this.ciudad = ciudad;
-		this.fechaEntrada = fechaEntrada;
-		this.fechaSalida = fechaSalida;
-		this.precio = precio;
+    public Alojamiento(String id, String nombre, String tipo, double precio, String fecha, Agencia agencia, 
+            String nombreHotel, String ciudad, String tipoHabitacion) {
+super(id, nombre, tipo, precio, fecha, agencia);
+this.nombreHotel = nombreHotel;
+this.ciudad = ciudad;
+this.tipoHabitacion = tipoHabitacion;
+
+}
+
+	public String getNombreHotel() {
+		return nombreHotel;
 	}
-	public String getNombreEvento() {
-		return nombreEvento;
+
+	public void setNombreHotel(String nombreHotel) {
+		this.nombreHotel = nombreHotel;
 	}
-	public void setNombreEvento(String nombreEvento) {
-		this.nombreEvento = nombreEvento;
-	}
-	public String getTipoHabitacion() {
-		return tipoHabitacion;
-	}
-	public void setTipoHabitacion(String tipoHabitacion) {
-		this.tipoHabitacion = tipoHabitacion;
-	}
+
 	public String getCiudad() {
 		return ciudad;
 	}
+
 	public void setCiudad(String ciudad) {
 		this.ciudad = ciudad;
 	}
-	public String getFechaEntrada() {
-		return fechaEntrada;
+
+	public String getTipoHabitacion() {
+		return tipoHabitacion;
 	}
-	public void setFechaEntrada(String fechaEntrada) {
-		this.fechaEntrada = fechaEntrada;
+
+	public void setTipoHabitacion(String tipoHabitacion) {
+		this.tipoHabitacion = tipoHabitacion;
 	}
-	public String getFechaSalida() {
-		return fechaSalida;
-	}
-	public void setFechaSalida(String fechaSalida) {
-		this.fechaSalida = fechaSalida;
-	}
-	public double getPrecio() {
-		return precio;
-	}
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
+
 	@Override
 	public String toString() {
-		return "Alojamiento [nombreEvento=" + nombreEvento + ", tipoHabitacion=" + tipoHabitacion + ", ciudad="
-				+ ciudad + ", fechaEntrada=" + fechaEntrada + ", fechaSalida=" + fechaSalida + ", precio=" + precio
+		return "Alojamiento [nombreHotel=" + nombreHotel + ", ciudad=" + ciudad + ", tipoHabitacion=" + tipoHabitacion
 				+ "]";
 	}
+    
+    
+    
+    	
 }

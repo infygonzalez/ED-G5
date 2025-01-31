@@ -1,89 +1,91 @@
 package modelo_Pojos;
 
-public class Vuelo {
-	
-	private String trayecto; // "Sólo Ida" o "Ida y vuelta"
-    private String aeropuertoOrigen;
-    private String aeropuertoDestino;
-    private String fechaIda; // Formato de fecha
-    private String codigoVuelo;
-    private String aerolinea;
-    private double precio;
-    private int horarioSalida; // Formato HH:MM
-    private int duracion; // Formato HH:MM
+public class Vuelo extends Evento {
     
-	public Vuelo(String trayecto, String aeropuertoOrigen, String aeropuertoDestino, String fechaIda,
-			String codigoVuelo, String aerolinea, double precio, int horarioSalida, int duracion) {
-		super();
-		this.trayecto = trayecto;
-		this.aeropuertoOrigen = aeropuertoOrigen;
-		this.aeropuertoDestino = aeropuertoDestino;
-		this.fechaIda = fechaIda;
-		this.codigoVuelo = codigoVuelo;
-		this.aerolinea = aerolinea;
-		this.precio = precio;
-		this.horarioSalida = horarioSalida;
-		this.duracion = duracion;
-	}
-	public String getTrayecto() {
-		return trayecto;
-	}
-	public void setTrayecto(String trayecto) {
-		this.trayecto = trayecto;
-	}
-	public String getAeropuertoOrigen() {
-		return aeropuertoOrigen;
-	}
-	public void setAeropuertoOrigen(String aeropuertoOrigen) {
-		this.aeropuertoOrigen = aeropuertoOrigen;
-	}
-	public String getAeropuertoDestino() {
-		return aeropuertoDestino;
-	}
-	public void setAeropuertoDestino(String aeropuertoDestino) {
-		this.aeropuertoDestino = aeropuertoDestino;
-	}
-	public String getFechaIda() {
-		return fechaIda;
-	}
-	public void setFechaIda(String fechaIda) {
-		this.fechaIda = fechaIda;
-	}
-	public String getCodigoVuelo() {
-		return codigoVuelo;
-	}
-	public void setCodigoVuelo(String codigoVuelo) {
-		this.codigoVuelo = codigoVuelo;
-	}
-	public String getAerolinea() {
-		return aerolinea;
-	}
-	public void setAerolinea(String aerolinea) {
-		this.aerolinea = aerolinea;
-	}
-	public double getPrecio() {
-		return precio;
-	}
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-	public int getHorarioSalida() {
-		return horarioSalida;
-	}
-	public void setHorarioSalida(int horarioSalida) {
-		this.horarioSalida = horarioSalida;
-	}
-	public int getDuracion() {
-		return duracion;
-	}
-	public void setDuracion(int duracion) {
-		this.duracion = duracion;
-	}
-	@Override
-	public String toString() {
-		return "Vuelo [trayecto=" + trayecto + ", aeropuertoOrigen=" + aeropuertoOrigen + ", aeropuertoDestino="
-				+ aeropuertoDestino + ", fechaIda=" + fechaIda + ", codigoVuelo=" + codigoVuelo + ", aerolinea="
-				+ aerolinea + ", precio=" + precio + ", horarioSalida=" + horarioSalida + ", duracion=" + duracion
-				+ "]";
-	}
+    private Aeropuerto aeropuertoOrigen;
+    private Aeropuerto aeropuertoDestino;
+    private String horaSalida;
+    private String duracion;
+    private Vuelo vueloIda;  // Puede ser útil para los vuelos de ida, pero depende de la lógica que implementes
+    private Aerolinea aerolinea;  // Aerolinea asociada al vuelo
+    
+    // Constructor
+    /**
+     * @param id
+     * @param nombre
+     * @param tipo
+     * @param precio
+     * @param fecha
+     * @param agencia
+     * @param aeropuertoOrigen
+     * @param aeropuertoDestino
+     * @param horaSalida
+     * @param duracion
+     * @param aerolinea
+     */
+    public Vuelo(String id, String nombre, String tipo, double precio, String fecha, Agencia agencia, 
+                 Aeropuerto aeropuertoOrigen, Aeropuerto aeropuertoDestino, String horaSalida, 
+                 String duracion, Aerolinea aerolinea) {
+        super(id, nombre, tipo, precio, fecha, agencia);  // Llamamos al constructor de la clase base Evento
+        this.aeropuertoOrigen = aeropuertoOrigen;
+        this.aeropuertoDestino = aeropuertoDestino;
+        this.horaSalida = horaSalida;
+        this.duracion = duracion;
+        this.aerolinea = aerolinea;
+    }
+    
+    // Getters y setters
+    public Aeropuerto getAeropuertoOrigen() {
+        return aeropuertoOrigen;
+    }
+
+    public void setAeropuertoOrigen(Aeropuerto aeropuertoOrigen) {
+        this.aeropuertoOrigen = aeropuertoOrigen;
+    }
+
+    public Aeropuerto getAeropuertoDestino() {
+        return aeropuertoDestino;
+    }
+
+    public void setAeropuertoDestino(Aeropuerto aeropuertoDestino) {
+        this.aeropuertoDestino = aeropuertoDestino;
+    }
+
+    public String getHoraSalida() {
+        return horaSalida;
+    }
+
+    public void setHoraSalida(String horaSalida) {
+        this.horaSalida = horaSalida;
+    }
+
+    public String getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(String duracion) {
+        this.duracion = duracion;
+    }
+
+    public Vuelo getVueloIda() {
+        return vueloIda;
+    }
+
+    public void setVueloIda(Vuelo vueloIda) {
+        this.vueloIda = vueloIda;
+    }
+
+    public Aerolinea getAerolinea() {
+        return aerolinea;
+    }
+
+    public void setAerolinea(Aerolinea aerolinea) {
+        this.aerolinea = aerolinea;
+    }
+
+    @Override
+    public String toString() {
+        return "Vuelo [aeropuertoOrigen=" + aeropuertoOrigen + ", aeropuertoDestino=" + aeropuertoDestino
+                + ", horaSalida=" + horaSalida + ", duracion=" + duracion + ", aerolinea=" + aerolinea + "]";
+    }
 }

@@ -1,18 +1,23 @@
 package modelo_Pojos;
 
+import java.util.ArrayList;
+
 public class Viaje {
 	
-	private String nombreViaje;
-    private String tipoViaje;
-    private String inicioViaje; // Formato de fecha
-    private String finViaje; // Formato de fecha
-    private int numeroDias; // Campo autocalculado, no editable
-    private String pais; // País seleccionado de un desplegable
-    private String descripcion;//Texto Largo
-    private String serviciosNoIncluidos;//Texto Largo
+	  private String nombreViaje;
+	    private String tipoViaje;
+	    private String inicioViaje; // Formato de fecha
+	    private String finViaje; // Formato de fecha
+	    private int numeroDias;
+	    private Pais pais; // Pais como objeto
+	    private String descripcion;
+	    private String serviciosNoIncluidos;
+	    private Agencia agencia; // Agencia asociada
+	    private ArrayList<Evento> eventos; // Lista de eventos asociados a este viaje
+
     
     
-	public Viaje(String nombreViaje, String tipoViaje, String inicioViaje, String finViaje, int numeroDias, String pais,
+	public Viaje(String nombreViaje, String tipoViaje, String inicioViaje, String finViaje, int numeroDias, Pais pais,
 			String descripcion, String serviciosNoIncluidos) {
 		super();
 		this.nombreViaje = nombreViaje;
@@ -54,10 +59,10 @@ public class Viaje {
 	public void setNumeroDias(int numeroDias) {
 		this.numeroDias = numeroDias;
 	}
-	public String getPais() {
+	public Pais getPais() {
 		return pais;
 	}
-	public void setPais(String pais) {
+	public void setPais(Pais pais) {
 		this.pais = pais;
 	}
 	public String getDescripcion() {
@@ -72,6 +77,11 @@ public class Viaje {
 	public void setServiciosNoIncluidos(String serviciosNoIncluidos) {
 		this.serviciosNoIncluidos = serviciosNoIncluidos;
 	}
+	
+	
+	   public void agregarEvento(Evento evento) {
+	        this.eventos.add(evento);
+	    }
 	
 	
 	@Override

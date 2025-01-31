@@ -165,79 +165,92 @@ public class NuevoPerfil extends JFrame {
 							}
 			private void añadirNuevaAgencia() {
 			    // Obtener valores del formulario
-			    String agenNuevo = textfield_nombre.getText().trim();  // Nombre de la agencia
-			    String numEmpStr = comboBox_empleados.getSelectedItem().toString();
-			    int numEmp = 0; // Valor por defecto si no se selecciona nada
+				String agenNuevo = textfield_nombre.getText().trim();  // Nombre de la agencia
+				String numEmpStr = comboBox_empleados.getSelectedItem().toString();
+				int numEmp = 0; // Valor por defecto si no se selecciona nada
 
-			    // Convertir número de empleados
-			    if (numEmpStr.contains("2 y 10")) {
-			        numEmp = 2;
-			    } else if (numEmpStr.contains("10 y 100")) {
-			        numEmp = 10;
-			    } else if (numEmpStr.contains("100 y 1000")) {
-			        numEmp = 100;
-			    }
+				// Convertir número de empleados
+				if (numEmpStr.contains("2 y 10")) {
+				    numEmp = 2;
+				} else if (numEmpStr.contains("10 y 100")) {
+				    numEmp = 10;
+				} else if (numEmpStr.contains("100 y 1000")) {
+				    numEmp = 100;
+				}
 
-			    String tipoAgen = comboBox_tipoAgencia.getSelectedItem().toString();  // Tipo de agencia
-			    String contr = new String(passwordField.getPassword());  // Contraseña
-			    String urlLogo = textField_logo.getText().trim();  // URL del logo
+				String tipoAgen = comboBox_tipoAgencia.getSelectedItem().toString();  // Tipo de agencia
+				String contr = new String(passwordField.getPassword());  // Contraseña
+				String urlLogo = textField_logo.getText().trim();  // URL del logo
 
-			    // Validación de campos obligatorios
-			    if (agenNuevo.isEmpty() || numEmp == 0 || tipoAgen.isEmpty() || contr.isEmpty() || colorSeleccionado == null) {
-			        JOptionPane.showMessageDialog(panel, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
-			        return;
-			    }
+				// Validación de campos obligatorios
+				if (agenNuevo.isEmpty() || numEmp == 0 || tipoAgen.isEmpty() || contr.isEmpty() || colorSeleccionado == null) {
+				    JOptionPane.showMessageDialog(panel, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+				    return;
+				}
 
-			    Connection conexion = null;
-			    PreparedStatement sentencia = null;
+				// Validación de URL del logo
+				/*
+				 * 
+				 * */if (!esUrlValida(urlLogo)) {
+				    JOptionPane.showMessageDialog(panel, "La URL del logo no es válida. Asegúrese de que sea una URL válida (ejemplo: http://www.ejemplo.com).", "Error", JOptionPane.ERROR_MESSAGE);
+				    return;
+				}
 
-			    try {
-			        // Conexión a la base de datos
-			        Class.forName(BDUtils.DRIVER);
-			        conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
+				Connection conexion = null;
+				PreparedStatement sentencia = null;
 
-			        // Consulta SQL
-			        String sql = SQLQueries.INSERT_NUEVA_AGENCIA;
-			        sentencia = conexion.prepareStatement(sql);
+				try {
+				    // Conexión a la base de datos
+				    Class.forName(BDUtils.DRIVER);
+				    conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
 
-			        // Asignar parámetros a la consulta
-			        sentencia.setString(1, agenNuevo);  // Nombre
-			        sentencia.setString(2, urlLogo);  // Logo
-			        sentencia.setString(3, "#" + Integer.toHexString(colorSeleccionado.getRGB()).substring(2)); // Color en hexadecimal
-			        sentencia.setInt(4, numEmp);  // Número de empleados (cambio de setString() a setInt())
-			        sentencia.setString(5, tipoAgen);  // Tipo de agencia
-			        sentencia.setString(6, contr);  // Contraseña
+				    // Consulta SQL
+				    String sql = SQLQueries.INSERT_NUEVA_AGENCIA;
+				    sentencia = conexion.prepareStatement(sql);
 
-			        // Ejecutar la consulta
-			        int datosInsertados = sentencia.executeUpdate();
+				    // Asignar parámetros a la consulta
+				    sentencia.setString(1, agenNuevo);  // Nombre
+				    sentencia.setString(2, urlLogo);  // Logo
+				    sentencia.setString(3, "#" + Integer.toHexString(colorSeleccionado.getRGB()).substring(2)); // Color en hexadecimal
+				    sentencia.setInt(4, numEmp);  // Número de empleados (cambio de setString() a setInt())
+				    sentencia.setString(5, tipoAgen);  // Tipo de agencia
+				    sentencia.setString(6, contr);  // Contraseña
 
-			        if (datosInsertados > 0) {
-			            JOptionPane.showMessageDialog(panel, "Agencia añadida correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-			            setVisible(false);
-			          llamarViajesyEventos();
-			        } else {
-			            JOptionPane.showMessageDialog(panel, "No se pudo añadir la agencia.", "Error", JOptionPane.ERROR_MESSAGE);
-			        }
+				    // Ejecutar la consulta
+				    int datosInsertados = sentencia.executeUpdate();
 
-			    } catch (SQLException ex) {
-			        ex.printStackTrace();
-			        JOptionPane.showMessageDialog(panel, "Error al ejecutar la consulta SQL: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			    } catch (Exception ex) {
-			        ex.printStackTrace();
-			        JOptionPane.showMessageDialog(panel, "Error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			    } finally {
-			        // Cerrar recursos
-			        try {
-			            if (sentencia != null) sentencia.close();
-			            if (conexion != null) conexion.close();
-			        } catch (SQLException ex) {
-			            ex.printStackTrace();
-			        }
-			    }
+				    if (datosInsertados > 0) {
+				        JOptionPane.showMessageDialog(panel, "Agencia añadida correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+				        setVisible(false);
+				        llamarViajesyEventos();
+				    } else {
+				        JOptionPane.showMessageDialog(panel, "No se pudo añadir la agencia.", "Error", JOptionPane.ERROR_MESSAGE);
+				    }
+
+				} catch (SQLException ex) {
+				    ex.printStackTrace();
+				    JOptionPane.showMessageDialog(panel, "Error al ejecutar la consulta SQL: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (Exception ex) {
+				    ex.printStackTrace();
+				    JOptionPane.showMessageDialog(panel, "Error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				} finally {
+				    // Cerrar recursos
+				    try {
+				        if (sentencia != null) sentencia.close();
+				        if (conexion != null) conexion.close();
+				    } catch (SQLException ex) {
+				        ex.printStackTrace();
+				    }
+				}
+			}
+			
+			private boolean esUrlValida(String urlLogo) {
+				// TODO Auto-generated method stub
+				return true;
 			}
 			private void llamarViajesyEventos() {
 				// TODO Auto-generated method stub
-				ViajesyEventos ViajesyEventos = new ViajesyEventos(Login);
+				ViajesyEventos ViajesyEventos = new ViajesyEventos();
 				setVisible(false);
 				ViajesyEventos.setVisible(true);
 			}

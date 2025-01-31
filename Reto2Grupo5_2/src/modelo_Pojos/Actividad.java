@@ -1,47 +1,33 @@
 package modelo_Pojos;
 
-public class Actividad {
+public class Actividad extends Evento {
 	
-	private String nombreEvento;
-    private String descripcion;
-    private String fecha; // Formato de fecha
-    private double precio;
+
     
-    public String getNombreEvento() {
-		return nombreEvento;
+	private String descripcion;
+
+    
+	public Actividad(String id, String nombre, String tipo, double precio, String fecha, Agencia agencia, String descripcion) {
+		super(id, nombre, tipo, precio, fecha, agencia);
+		this.descripcion=descripcion;
+		// TODO Auto-generated constructor stub
 	}
-	public Actividad(String nombreEvento, String descripcion, String fecha, double precio) {
-		super();
-		this.nombreEvento = nombreEvento;
-		this.descripcion = descripcion;
-		this.fecha = fecha;
-		this.precio = precio;
-	}
-	public void setNombreEvento(String nombreEvento) {
-		this.nombreEvento = nombreEvento;
-	}
+
+
 	public String getDescripcion() {
 		return descripcion;
 	}
+
+
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public String getFecha() {
-		return fecha;
-	}
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
-	}
-	public double getPrecio() {
-		return precio;
-	}
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-	
+
+
 	@Override
 	public String toString() {
-		return "Actividad [nombreEvento=" + nombreEvento + ", descripcion=" + descripcion + ", fecha=" + fecha
-				+ ", precio=" + precio + "]";
+		return "Actividad [descripcion=" + descripcion + "]";
 	}
+
+	
 }
