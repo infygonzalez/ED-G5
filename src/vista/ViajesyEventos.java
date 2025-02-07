@@ -100,7 +100,7 @@ public class ViajesyEventos extends JFrame {
         	new Object[][] {
         	},
         	new String[] {
-        		"Nombre", "Tipo", "PaisDestino", "Fecha_Inicio", "Fecha_Fin", "Duracion", "ServNoIncluidos"
+        		"IdViajes", "Nombre", "Tipo", "PaisDestino", "Fecha_Inicio", "Fecha_Fin", "Duracion", "ServNoIncluidos"
         	}
         ));
         scrollPaneViajes.setViewportView(tableViajes);
@@ -138,7 +138,8 @@ public class ViajesyEventos extends JFrame {
                 }
 
                 // Obtener el ID del viaje
-                int idViaje = (Integer) tableViajes.getModel().getValueAt(selectedRow, 7);
+                int idViaje = Integer.parseInt((String) tableViajes.getModel().getValueAt(selectedRow, 0));
+
 
                 try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD)) {
                     // 1. Eliminar los registros relacionados en la tabla Pais
@@ -312,6 +313,7 @@ public class ViajesyEventos extends JFrame {
             ResultSet resultado = sentencia.executeQuery();
 
             while (resultado.next()) {
+            	String IdViajes = resultado.getString("IdViajes");
                 String Nombre = resultado.getString("Nombre");
                 String Tipo = resultado.getString("Tipo");
                 String PaisDestino = resultado.getString("PaisDestino");
@@ -320,7 +322,7 @@ public class ViajesyEventos extends JFrame {
                 int Duracion_dias = resultado.getInt("Duracion_dias");
                 String ServNoIncluidos = resultado.getString("ServNoIncluidos");
                 // Se agrega el idViaje como octava columna (columna oculta)
-                modelo.addRow(new Object[]{Nombre, Tipo, PaisDestino, Fecha_Inicio, Fecha_Fin, Duracion_dias, ServNoIncluidos});
+                modelo.addRow(new Object[]{IdViajes, Nombre, Tipo, PaisDestino, Fecha_Inicio, Fecha_Fin, Duracion_dias, ServNoIncluidos});
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -355,18 +357,20 @@ public class ViajesyEventos extends JFrame {
     }
     
     private void abrirVentanaNuevoEvento() {
-        // Se obtiene el idViaje de la fila seleccionada en la tabla de viajes
         int selectedRow = tableViajes.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione un viaje para asignar el evento.", "Atención", JOptionPane.WARNING_MESSAGE);
             return;
         }
-      
-        int idViaje = (Integer) tableViajes.getModel().getValueAt(selectedRow, 7);
-        
+
+        // Asegurar que el ID se obtiene correctamente y se convierte a int
+        String idViajeStr = (String) tableViajes.getModel().getValueAt(selectedRow, 0); // Usa la columna correcta
+        int idViaje = Integer.parseInt(idViajeStr);
+
         NuevoEvento ventanaNuevoEvento = new NuevoEvento(idAgencia, idViaje);
         ventanaNuevoEvento.setVisible(true);
     }
+
 
     private void llamarBienvenida() {
         Bienvenida bienvenida = new Bienvenida();

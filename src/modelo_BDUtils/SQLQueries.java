@@ -8,7 +8,7 @@
 			//Selects
 			public static final String SELECT_AGENCIA_USUARIO_CONTRASEÑA ="SELECT * FROM agenciaviajes WHERE Nombre = ? AND Contrasena  = ?";
 			public static final String SELECT_NOMBRE_AGENCIA= "SELECT * FROM agenciaviajes WHERE Nombre = ?";
-		    public static final String SELECT_VIAJES_IDAGENCIA="SELECT Nombre , Tipo , PaisDestino , Fecha_Inicio, Fecha_Fin , Duracion_dias ,ServNoIncluidos FROM viajes WHERE idAgencia = ?";
+		    public static final String SELECT_VIAJES_IDAGENCIA="SELECT IdViajes, Nombre , Tipo , PaisDestino , Fecha_Inicio, Fecha_Fin , Duracion_dias ,ServNoIncluidos FROM viajes WHERE idAgencia = ?";
 			public static final String SELECT_EVENTOS_IDVIAJE="SELECT Nombre, Tipo, Precio, Fecha FROM eventos WHERE idViajes = ?";
 			public static final String SELECT_COLORyLogo_IDAGENCIA=" SELECT Logo , ColorMarca FROM agenciaviajes WHERE idAgencia = ? ";
 	        public static final String SELECT_AEROPUERTOS="SELECT Nombre FROM aeropuerto";
