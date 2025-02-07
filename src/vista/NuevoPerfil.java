@@ -72,6 +72,7 @@ private Agencia agencia;
 	panel.setBorder(border);
 	
 	
+	
 	//EL FONDO
 	JLabel lbl_nombreEmpresa = new JLabel("TRAVEL FIVE");
 	lbl_nombreEmpresa.setFont(new Font("Stencil", Font.BOLD, 33));
