@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import modelo_BDUtils.BDUtils;
 import modelo_BDUtils.SQLQueries;
@@ -22,7 +23,7 @@ public class Login extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField textField_usuario;
-    private JTextField textField_contraseña;
+    private JPasswordField passwordField_contraseña;
 
     /**
      * Create the frame.
@@ -53,10 +54,9 @@ public class Login extends JFrame {
         contentPane.add(textField_usuario);
         textField_usuario.setColumns(10);
 
-        textField_contraseña = new JTextField();
-        textField_contraseña.setColumns(10);
-        textField_contraseña.setBounds(191, 305, 188, 20);
-        contentPane.add(textField_contraseña);
+        passwordField_contraseña = new JPasswordField();
+        passwordField_contraseña.setBounds(191, 305, 188, 20);
+        contentPane.add(passwordField_contraseña);
 
         JLabel lbl_error = new JLabel("* LOS DOS CAMPOS SON OBLIGATORIOS");
         lbl_error.setVisible(false);
@@ -81,7 +81,7 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Verificar si los campos están vacíos
                 String usu = textField_usuario.getText().trim();
-                String contr = textField_contraseña.getText().trim();
+                String contr = new String(passwordField_contraseña.getPassword()).trim();
 
                 if (usu.isEmpty() || contr.isEmpty()) {
                     lbl_error.setText("Por favor, complete todos los campos.");
