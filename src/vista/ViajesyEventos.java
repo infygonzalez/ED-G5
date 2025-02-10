@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -76,6 +77,7 @@ public class ViajesyEventos extends JFrame {
         panel.add(lbl_viajes);
 
         JLabel lbl_eventos = new JLabel("Eventos");
+        lbl_eventos.setVisible(false); // ocultar antes de seleccionar
         lbl_eventos.setBounds(316, 303, 46, 14);
         panel.add(lbl_eventos);
         
@@ -89,35 +91,36 @@ public class ViajesyEventos extends JFrame {
 
         ImportarColoryLogo();
 
-        // Configuración de la tabla de viajes
+        /********************************TABLA VIAJES***************************************/
         JScrollPane scrollPaneViajes = new JScrollPane();
+        
         scrollPaneViajes.setBounds(43, 147, 772, 120);
         panel.add(scrollPaneViajes);
 
-        // Agregamos una columna extra ("idViaje") que luego ocultaremos
+        
         tableViajes = new JTable();
         tableViajes.setModel(new DefaultTableModel(
-        	new Object[][] {
-        	},
-        	new String[] {
-        		"IdViajes", "Nombre", "Tipo", "PaisDestino", "Fecha_Inicio", "Fecha_Fin", "Duracion", "ServNoIncluidos"
-        	}
-        ));
+        	    new Object[][] {},
+        	    new String[] {
+        	        "IdViajes", "Nombre", "Tipo", "PaisDestino", "Fecha_Inicio", "Fecha_Fin", "Duracion", "ServNoIncluidos"
+        	    }
+        	) {
+        	    @Override
+        	    public boolean isCellEditable(int row, int column) {
+        	        return false; // Hace que todas las celdas sean no editables
+        	    }
+        	});
+
+    	// Permitir selección de filas completas
+    	tableViajes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	tableViajes.setRowSelectionAllowed(true);
+    	tableViajes.setColumnSelectionAllowed(false);
+        	
         scrollPaneViajes.setViewportView(tableViajes);
 
-        // Configuración de la tabla de eventos
-        JScrollPane scrollPaneEventos = new JScrollPane();
-        scrollPaneEventos.setBounds(43, 328, 772, 120);
-        panel.add(scrollPaneEventos);
-
-        tableEventos = new JTable();
-        tableEventos.setModel(new DefaultTableModel(
-            new Object[][] {},
-            new String[] {"Nombre", "Tipo", "Precio", "Fecha"}
-        ));
-        scrollPaneEventos.setViewportView(tableEventos);
         
-        // BORRAR VIAJES
+        
+        /********************************BORRAR VIAJES***************************************/
         JButton btnborrarViaje = new JButton();
         ImageIcon icono = new ImageIcon("imagenes/basura.png");
         Image imagen = icono.getImage(); // Obtener la imagen de la imagen del icono
@@ -188,8 +191,36 @@ public class ViajesyEventos extends JFrame {
         btnborrarViaje.setBounds(825, 173, 40, 40); // Ajusta la posición del botón
         panel.add(btnborrarViaje);
         
-        // BORRAR EVENTOS
+        
+        /********************************TABLA EVENTOS***************************************/
+        JScrollPane scrollPaneEventos = new JScrollPane();
+        scrollPaneEventos.setVisible(false); // ocultar antes de seleccionar
+        scrollPaneEventos.setBounds(43, 328, 772, 120);
+        panel.add(scrollPaneEventos);
+
+        tableEventos = new JTable();
+        tableEventos.setModel(new DefaultTableModel(
+            new Object[][] {},
+            new String[] {"Nombre", "Tipo", "Precio", "Fecha"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que las celdas no sean editables
+            }
+        });
+
+        // Permitir selección de filas
+        tableEventos.setRowSelectionAllowed(true);
+        tableEventos.setColumnSelectionAllowed(false);
+        tableEventos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        scrollPaneEventos.setViewportView(tableEventos);
+        
+       
+        /********************************BORRAR EVENTOS***************************************/
+        
         JButton btnborrareventos = new JButton();
+        btnborrareventos.setVisible(false); // ocultar antes de seleccionar
         ImageIcon icono2 = new ImageIcon("imagenes/basura.png");
         Image imagen2 = icono2.getImage(); // Obtener la imagen de la imagen del icono
         Image imagenEscalada2 = imagen2.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
@@ -301,7 +332,8 @@ public class ViajesyEventos extends JFrame {
 	private Color convertirColor(String colorHex) {
 		return Color.decode(colorHex);
 	}
-
+	
+	/********************************CARGAR DATOS TABLA VIAJES***************************************/
 	private void cargarDatosViajes() {
         DefaultTableModel modelo = (DefaultTableModel) tableViajes.getModel();
         modelo.setRowCount(0);
@@ -328,7 +360,8 @@ public class ViajesyEventos extends JFrame {
             e.printStackTrace();
         }
     }
-
+	
+	/********************************CARGAR DATOS TABLA EVENTOS***************************************/
     private void cargarDatosEventos() {
         DefaultTableModel modelo = (DefaultTableModel) tableEventos.getModel();
         modelo.setRowCount(0);
