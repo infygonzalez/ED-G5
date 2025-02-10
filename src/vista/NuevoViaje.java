@@ -1,7 +1,7 @@
 package vista;
 
-import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.Color; 
+import java.awt.EventQueue; 
 import com.toedter.calendar.JDateChooser;
 
 import modelo_BDUtils.BDUtils;

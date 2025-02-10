@@ -116,7 +116,7 @@ public class ViajesyEventos extends JFrame {
     	tableViajes.setRowSelectionAllowed(true);
     	tableViajes.setColumnSelectionAllowed(false);
         	
-        scrollPaneViajes.setViewportView(tableViajes);
+        scrollPaneViajes.setViewportView(tableViajes); 
 
         
         
