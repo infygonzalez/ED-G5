@@ -116,7 +116,8 @@ public class ViajesyEventos extends JFrame {
     	tableViajes.setRowSelectionAllowed(true);
     	tableViajes.setColumnSelectionAllowed(false);
         	
-        scrollPaneViajes.setViewportView(tableViajes); 
+        
+    	
 
         
         
@@ -279,9 +280,24 @@ public class ViajesyEventos extends JFrame {
  
         cargarDatosViajes();
         cargarDatosEventos();
+        
+        scrollPaneViajes.setViewportView(tableViajes);
+    	tableViajes.getSelectionModel().addListSelectionListener(e -> {
+    	    if (!e.getValueIsAdjusting()) { // Ensures the event fires only once per selection
+    	        int selectedRow = tableViajes.getSelectedRow();
+    	        if (selectedRow != -1) { // Check if a valid row is selected
+    	        	lbl_eventos.setVisible(true);
+    	        	scrollPaneEventos.setVisible(true);
+    	        	btnborrareventos.setVisible(true);
+    	        }
+    	    }
+    	});
+        
     }
 
-    private void ImportarColoryLogo() {
+    
+
+	private void ImportarColoryLogo() {
         if (panelColor == null || panelLogo == null) {
             System.err.println("Error: Uno de los paneles es null.");
             return;
