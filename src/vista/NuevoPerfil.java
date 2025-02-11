@@ -93,7 +93,7 @@ private Agencia agencia;
 	
 	lbl_nombreError = new JLabel("");
 	lbl_nombreError.setForeground(Color.RED);
-	lbl_nombreError.setBounds(148, 57, 163, 14);
+	lbl_nombreError.setBounds(148, 11, 234, 14);
 	panel.add(lbl_nombreError);
 	
 	textfield_nombre = new JTextField();
@@ -296,11 +296,11 @@ private Agencia agencia;
 		
 		   lbl_contr = new JLabel("Crea una contraseña:");
 		lbl_contr.setForeground(Color.WHITE);
-		lbl_contr.setBounds(362, 38, 127, 14);
+		lbl_contr.setBounds(340, 59, 127, 14);
 		panel.add(lbl_contr);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(340, 67, 149, 20);
+		passwordField.setBounds(340, 84, 149, 20);
 		panel.add(passwordField);
 		
 		textfield_nombre.getDocument().addDocumentListener(new DocumentListener() {

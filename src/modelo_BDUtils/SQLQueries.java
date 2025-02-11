@@ -4,7 +4,7 @@
 	 * 
 	 */
 	
-	public class SQLQueries {
+	public class SQLQueries { 
 			//Selects
 			public static final String SELECT_AGENCIA_USUARIO_CONTRASEÑA ="SELECT * FROM agenciaviajes WHERE Nombre = ? AND Contrasena  = ?";
 			public static final String SELECT_NOMBRE_AGENCIA= "SELECT * FROM agenciaviajes WHERE Nombre = ?";

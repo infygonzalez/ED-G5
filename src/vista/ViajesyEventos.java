@@ -193,6 +193,7 @@ public class ViajesyEventos extends JFrame {
         panel.add(btnborrarViaje);
         
         
+        
         /********************************TABLA EVENTOS***************************************/
         JScrollPane scrollPaneEventos = new JScrollPane();
         scrollPaneEventos.setVisible(false); // ocultar antes de seleccionar
@@ -270,28 +271,30 @@ public class ViajesyEventos extends JFrame {
         });
         btnborrareventos.setBounds(825, 353, 40, 40);
         panel.add(btnborrareventos);
-
         
-        JLabel basura1 = new JLabel("");
-        basura1.setIcon(new ImageIcon(""));
-        basura1.setBounds(803, 272, 46, 45);
-        panel.add(basura1);
-
- 
+        
         cargarDatosViajes();
         cargarDatosEventos();
         
+        // Al seleccionar una fila, aparece la tabla de eventos
         scrollPaneViajes.setViewportView(tableViajes);
-    	tableViajes.getSelectionModel().addListSelectionListener(e -> {
-    	    if (!e.getValueIsAdjusting()) { // Ensures the event fires only once per selection
-    	        int selectedRow = tableViajes.getSelectedRow();
-    	        if (selectedRow != -1) { // Check if a valid row is selected
-    	        	lbl_eventos.setVisible(true);
-    	        	scrollPaneEventos.setVisible(true);
-    	        	btnborrareventos.setVisible(true);
-    	        }
-    	    }
-    	});
+        tableViajes.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) { 
+                int selectedRow = tableViajes.getSelectedRow();
+                if (selectedRow != -1) { // Verifica si hay una fila seleccionada
+                    int idViaje = Integer.parseInt(tableViajes.getValueAt(selectedRow, 0).toString()); // Obtiene el ID del viaje
+                    lbl_eventos.setVisible(true);
+                    scrollPaneEventos.setVisible(true);
+                    btnborrareventos.setVisible(true);
+                    cargarDatosEventos(idViaje); // Cargar eventos del viaje seleccionado
+                }
+            }
+        });
+
+        
+        
+        
+        
         
     }
 
@@ -333,7 +336,7 @@ public class ViajesyEventos extends JFrame {
 	private ImageIcon convertirImg(String logo) {
 		try {
             URL url = new URL(logo);
-            ImageIcon imageIcon = new ImageIcon(url);
+            ImageIcon imageIcon = new ImageIcon(url); 
             Image scaledImage = imageIcon.getImage().getScaledInstance(114, 96, Image.SCALE_SMOOTH);
             return new ImageIcon(scaledImage);
         } catch (MalformedURLException e) {
@@ -378,27 +381,35 @@ public class ViajesyEventos extends JFrame {
     }
 	
 	/********************************CARGAR DATOS TABLA EVENTOS***************************************/
-    private void cargarDatosEventos() {
-        DefaultTableModel modelo = (DefaultTableModel) tableEventos.getModel();
-        modelo.setRowCount(0);
+	private void cargarDatosEventos(int idViaje) {
+	    DefaultTableModel modelo = (DefaultTableModel) tableEventos.getModel();
+	    modelo.setRowCount(0); 
 
-        try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
-             PreparedStatement sentencia = conexion.prepareStatement(SQLQueries.SELECT_EVENTOS_IDVIAJE)) {
-           
-            sentencia.setInt(1, idAgencia);
-            ResultSet resultado = sentencia.executeQuery();
+	    try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
+	         PreparedStatement sentencia = conexion.prepareStatement(SQLQueries.SELECT_EVENTOS_IDVIAJE)) {
+	       
+	        sentencia.setInt(1, idViaje);
+	        ResultSet resultado = sentencia.executeQuery();
 
-            while (resultado.next()) {
-                String nombre = resultado.getString("nombre");
-                String tipo = resultado.getString("tipo");
-                double precio = resultado.getDouble("precio");
-                String fecha = resultado.getString("fecha");
-                modelo.addRow(new Object[]{nombre, tipo, precio, fecha});
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	        while (resultado.next()) {
+	            String nombre = resultado.getString("Nombre");
+	            String tipo = resultado.getString("Tipo");
+	            double precio = resultado.getDouble("Precio");
+	            String fecha = resultado.getString("Fecha");
+	            modelo.addRow(new Object[]{nombre, tipo, precio, fecha});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	private void cargarDatosEventos() {
+	    DefaultTableModel modelo = (DefaultTableModel) tableEventos.getModel();
+	    modelo.setRowCount(0); 
+	}
+
+
+
 
     private void abrirVentanaNuevoViaje() {
         NuevoViaje ventanaNuevoViaje = new NuevoViaje(idAgencia);
