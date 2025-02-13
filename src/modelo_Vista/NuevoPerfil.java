@@ -86,7 +86,6 @@ GestorAgencia conexion = new  GestorAgencia();
 	lbl_imagen.setBounds(0, 0, 956, 612);
 	contentPane.add(lbl_imagen);
 	
-	// String con el nombre de la agencia a crear
 	JLabel lbl_nombreAgencia = new JLabel("Nombre Agencia:");
 	lbl_nombreAgencia.setForeground(new Color(255, 255, 255));
 	lbl_nombreAgencia.setBounds(10, 38, 111, 14);
@@ -116,8 +115,8 @@ GestorAgencia conexion = new  GestorAgencia();
 	textField_cambiarColor.setColumns(10);
 	
 	txtfield_colorr = new JTextField();
-	txtfield_colorr.setBounds(130, 82, 100, 20); // Asegúrate de que tenga un tamaño visible
-	panel.add(txtfield_colorr); // Añadir al panel
+	txtfield_colorr.setBounds(130, 82, 100, 20); 
+	panel.add(txtfield_colorr); 
 	
 	
 	
@@ -155,7 +154,7 @@ GestorAgencia conexion = new  GestorAgencia();
 		lbl_empleados.setBounds(10, 140, 111, 14);
 		panel.add(lbl_empleados);
 		
-		// un desplegable con las siguientes opciones: Entre 2 y 10 empleados, Entre 10 y 100 empleados y Entre 100 y 1000 empleados.
+		// un desplegable con las siguientes opciones: Entre 2 y 10 empleadoss, Entre 10 y 100 empleados y Entre 100 y 1000 empleados.
 		JComboBox comboBox_empleados = new JComboBox();
 		comboBox_empleados.setModel(new DefaultComboBoxModel(new String[] {"", "Entre 2 y 10 empleados", "Entre 10 y 100 empleados", "Entre 100 y 1000 empleados"}));
 		comboBox_empleados.setBounds(148, 138, 149, 18);
@@ -186,7 +185,6 @@ GestorAgencia conexion = new  GestorAgencia();
 		JButton btn_guardar = new JButton("Guardar");
 		btn_guardar.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		//-----------Variables------------------
 			String agenNuevo = textfield_nombre.getText().trim();  // Nombre de la agencia
 			String numEmpStr = comboBox_empleados.getSelectedItem().toString();
 			int numEmp = 0; // Valor por defecto si no se selecciona nada
@@ -221,19 +219,19 @@ GestorAgencia conexion = new  GestorAgencia();
 		panel.add(passwordField);
 		
 		textfield_nombre.getDocument().addDocumentListener(new DocumentListener() {
-			  @Override
-			           public void insertUpdate(DocumentEvent e) {
-			               conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
-			           }
-			           @Override
-			           public void removeUpdate(DocumentEvent e) {
-			        	   conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
-			           }
-			           @Override
-			           public void changedUpdate(DocumentEvent e) {
-			        	   conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
-			           }
-			       });
+			@Override
+		   public void insertUpdate(DocumentEvent e) {
+		       conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
+		   }
+		   @Override
+		   public void removeUpdate(DocumentEvent e) {
+			   conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
+		   }
+		   @Override
+		   public void changedUpdate(DocumentEvent e) {
+			   conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
+		   }
+		});
 	}
 
 }

@@ -125,10 +125,10 @@ public class ViajesyEventos extends JFrame {
            }
         });
 
-   // Permitir selección de filas completas
-   tableViajes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-   tableViajes.setRowSelectionAllowed(true);
-   tableViajes.setColumnSelectionAllowed(false);
+	   // Permitir selección de filas completas
+	   tableViajes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	   tableViajes.setRowSelectionAllowed(true);
+	   tableViajes.setColumnSelectionAllowed(false);
 
        
        
@@ -199,8 +199,7 @@ public class ViajesyEventos extends JFrame {
                 }
             }
         });
-
-        btnborrarViaje.setBounds(825, 173, 40, 40); // Ajusta la posición del botón
+        btnborrarViaje.setBounds(825, 173, 40, 40); 
         panel.add(btnborrarViaje);
        
        
@@ -268,7 +267,7 @@ public class ViajesyEventos extends JFrame {
                        
                         if (filasAfectadas > 0) {
                             JOptionPane.showMessageDialog(null, "Evento eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                            gestor.cargarDatosEventos(idAgencia,tableEventos); // Recargar la tabla de eventos
+                            gestor.cargarDatosEventos(idAgencia,tableEventos);
                         } else {
                             JOptionPane.showMessageDialog(null, "No se pudo eliminar el evento.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
@@ -284,7 +283,7 @@ public class ViajesyEventos extends JFrame {
 
        
        
-     // Al seleccionar una fila, aparece la tabla de eventos
+        // Al seleccionar una fila, aparece la tabla de eventos
         scrollPaneViajes.setViewportView(tableViajes);
         tableViajes.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -308,13 +307,12 @@ public class ViajesyEventos extends JFrame {
 
  
         gestor.cargarDatosViajes(idAgencia,tableViajes, tableEventos);
-        //gestor.cargarDatosEventos(idAgencia,tableEventos);
     }
 
 
 
  
-    /********************************OFERTA CLIENTES***************************************/
+    /********************************METODO PARA OFERTA CLIENTES***************************************/
     private void generarOfertaCliente() {
         int selectedRow = tableViajes.getSelectedRow();
         if (selectedRow == -1) {
@@ -323,12 +321,12 @@ public class ViajesyEventos extends JFrame {
         }
 
         int idViaje = Integer.parseInt(tableViajes.getValueAt(selectedRow, 0).toString());
-        String nombreViaje = tableViajes.getValueAt(selectedRow, 1).toString(); // Antes era 2
-        String tipo = tableViajes.getValueAt(selectedRow, 2).toString(); // Antes era 4
-        String destino = tableViajes.getValueAt(selectedRow, 3).toString(); // Antes era 5
-        String fechaInicio = tableViajes.getValueAt(selectedRow, 4).toString(); // Antes era 6
-        String fechaFin = tableViajes.getValueAt(selectedRow, 5).toString(); // Antes era 7
-        String serviciosNoIncluidos = tableViajes.getValueAt(selectedRow, 7).toString(); // Antes era 9 (fuera de rango)
+        String nombreViaje = tableViajes.getValueAt(selectedRow, 1).toString(); 
+        String tipo = tableViajes.getValueAt(selectedRow, 2).toString(); 
+        String destino = tableViajes.getValueAt(selectedRow, 3).toString(); 
+        String fechaInicio = tableViajes.getValueAt(selectedRow, 4).toString();
+        String fechaFin = tableViajes.getValueAt(selectedRow, 5).toString();
+        String serviciosNoIncluidos = tableViajes.getValueAt(selectedRow, 7).toString();
 
 
         StringBuilder eventosInfo = new StringBuilder();
@@ -401,8 +399,7 @@ public class ViajesyEventos extends JFrame {
             return;
         }
 
-        // Asegurar que el ID se obtiene correctamente y se convierte a int
-        String idViajeStr = (String) tableViajes.getModel().getValueAt(selectedRow, 0); // Usa la columna correcta
+        String idViajeStr = (String) tableViajes.getModel().getValueAt(selectedRow, 0); 
         int idViaje = Integer.parseInt(idViajeStr);
 
         NuevoEvento ventanaNuevoEvento = new NuevoEvento(idAgencia, idViaje);

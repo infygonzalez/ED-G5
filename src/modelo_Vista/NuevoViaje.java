@@ -1,25 +1,11 @@
 package modelo_Vista;
 
-import java.awt.Color; 
-import java.awt.EventQueue; 
 import com.toedter.calendar.JDateChooser;
-
-import modelo_BDUtils.BDUtils;
-import modelo_BDUtils.SQLQueries;
 import modelo_Gestor.GestorViajesyEventos;
-
 import javax.swing.*;
-import java.awt.event.*;
 import java.beans.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Date;
-
 import javax.swing.border.EmptyBorder;
-import com.toedter.calendar.JDateChooser;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -30,7 +16,6 @@ public class NuevoViaje extends JFrame {
 	private JTextField textField_nombre;
 	private JTextField textField_dias;
 	private JTextField textField_servicios;
-	private int idAgencia;
 	GestorViajesyEventos gestor= new GestorViajesyEventos();
 
 
@@ -115,8 +100,6 @@ public class NuevoViaje extends JFrame {
                 }
             }
         });
-        
-        
 		
 		JLabel lbl_pais = new JLabel("Pais:");
 		lbl_pais.setBounds(33, 388, 96, 14);

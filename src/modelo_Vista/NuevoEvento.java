@@ -1,8 +1,6 @@
 package modelo_Vista;
 
 
-
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -10,30 +8,19 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import com.toedter.calendar.JDateChooser;
-import com.mysql.cj.xdevapi.Statement;
-import com.toedter.calendar.JCalendar;
 import javax.swing.JTextPane;
-
 import modelo_BDUtils.BDUtils;
-import modelo_BDUtils.SQLQueries;
 
 
 
@@ -54,7 +41,6 @@ private JTextField textField_CodVuelReg;
 private JTextField textField_Ciudad;
 private JTextField textField_PrecioAloj;
 private JTextField textField_PrecioAct;
-private JComboBox comboBox_AerOrigen;
 private String Nombre;
 private JLabel lblNewLabel_Error;
 private JComboBox comboBox_AerOrigen_1;
@@ -93,25 +79,20 @@ public NuevoEvento(int idAgencia, int idViaje) {
 		
 		@Override
 		public void insertUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
 			verificarNombre();
 		}
 		
 		@Override
 		public void removeUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
 			verificarNombre();
 		}
 		
 		@Override
 		public void changedUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
 			verificarNombre();
 		}
 		
 		private void verificarNombre() {
-		// TODO Auto-generated method stub
-		
 		 String nombreAgencia = textField_NombreEven.getText().trim();
 		      if (nombreAgencia.isEmpty()) {
 		      lblNewLabel_Error.setText("");
@@ -132,12 +113,7 @@ public NuevoEvento(int idAgencia, int idViaje) {
 		      } catch (SQLException ex) {
 		          ex.printStackTrace();
 		      }
-		
-		
-		
-		
-		}
-		
+		}		
 	 });
 	
 	
@@ -336,9 +312,6 @@ public NuevoEvento(int idAgencia, int idViaje) {
 	dateChooser_idaVuel.setBounds(189, 275, 178, 20);
 	panel_VueloIda.add(dateChooser_idaVuel);
 	
-	
-	
-	
 	panel_Alojamiento = new JPanel();
 	panel_Alojamiento.setBounds(0, 98, 752, 489);
 	contentPane.add(panel_Alojamiento);
@@ -498,8 +471,7 @@ public NuevoEvento(int idAgencia, int idViaje) {
 			panel_Alojamiento.setVisible(false);
 			
 			}
-		           }
-		
+		 }
 	});
 	
 	
@@ -525,13 +497,10 @@ public NuevoEvento(int idAgencia, int idViaje) {
 			panel_VueloVuelta.setVisible(true);
 			
 			}
-		           }
-		
-	       });
+			
+		}
+	});
 	
-	//-------------------------------------------------------------------------------------------------------------------------//
-	//----------------------------------------------------VALIDACIONES----------------------------------------------------------
-	//--------Validaciones vuelos----------
 	 
 
 }

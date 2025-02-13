@@ -1,6 +1,7 @@
 package modelo_Vista;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -9,14 +10,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
-import modelo_BDUtils.BDUtils;
-import modelo_BDUtils.SQLQueries;
 import modelo_Gestor.GestorAgencia;
-
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.sql.*;
 
 import java.awt.event.ActionEvent;
 
