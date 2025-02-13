@@ -62,11 +62,12 @@ private JTextField textField_HSalida;
 private JTextField textField_Duracion;
 private JTextField textField_DuracionVuelta;
 private JTextField textField_HVuelta;
-private JTextField textField_PrecioTotal;
+private JTextField textField_PrecioRegreso;
 private JTextField textField_AerolineaReg;
 private JTextField textField_Ciudad;
 private JTextField textField_PrecioAloj;
 private JTextField textField_PrecioAct;
+private JTextField textField_Nombre;
 private JComboBox comboBox_AerOrigen;
 private String Nombre;
 private JLabel lblNewLabel_Error;
@@ -81,6 +82,13 @@ private JComboBox comboBox_Trayecto;
 private  JPanel panelColor;
 private JPanel panelLogo;
 private int idAgencia;
+
+private JDateChooser dateChooser_ida;
+
+private JDateChooser dateChooser_idaVuelta;
+private JDateChooser dateChooser_EntHotel;
+private JDateChooser dateChooser_SalHotel;
+private JComboBox comboBox_TipoDorm;
 /**
 * Create the frame.
 * @param idViaje
@@ -320,10 +328,10 @@ textField_HVuelta.setBounds(145, 165, 178, 20);
 panel_VueloVuelta.add(textField_HVuelta);
 
 
-textField_PrecioTotal = new JTextField();
-textField_PrecioTotal.setColumns(10);
-textField_PrecioTotal.setBounds(145, 127, 178, 20);
-panel_VueloVuelta.add(textField_PrecioTotal);
+textField_PrecioRegreso = new JTextField();
+textField_PrecioRegreso.setColumns(10);
+textField_PrecioRegreso.setBounds(145, 127, 178, 20);
+panel_VueloVuelta.add(textField_PrecioRegreso);
 
 
 textField_AerolineaReg = new JTextField();
@@ -332,15 +340,15 @@ textField_AerolineaReg.setBounds(145, 83, 178, 20);
 panel_VueloVuelta.add(textField_AerolineaReg);
 
 
-JLabel lblPrecioTotal = new JLabel("Precio total");
-lblPrecioTotal.setBounds(0, 130, 91, 14);
-panel_VueloVuelta.add(lblPrecioTotal);
+JLabel lblPrecioregreso = new JLabel("Precio total");
+lblPrecioregreso.setBounds(0, 130, 91, 14);
+panel_VueloVuelta.add(lblPrecioregreso);
 
-JDateChooser dateChooser_idaVuelta = new JDateChooser();
+ dateChooser_idaVuelta = new JDateChooser();
 dateChooser_idaVuelta.setBounds(145, 4, 178, 20);
 panel_VueloVuelta.add(dateChooser_idaVuelta);
 
-JDateChooser dateChooser_ida = new JDateChooser();
+dateChooser_ida = new JDateChooser();
 dateChooser_ida.setBounds(189, 275, 178, 20);
 panel_VueloIda.add(dateChooser_ida);
 
@@ -424,6 +432,14 @@ textPaneAct.setBounds(107, 24, 198, 168);
 panel_Actividad.add(textPaneAct);
 panel_Alojamiento.setLayout(null);
 
+JLabel lblNombre = new JLabel("Nombre");
+lblNombre.setBounds(51, 82, 46, 14);
+panel_Alojamiento.add(lblNombre);
+
+textField_Nombre = new JTextField();
+textField_Nombre.setColumns(10);
+textField_Nombre.setBounds(179, 79, 178, 20);
+panel_Alojamiento.add(textField_Nombre);
 
 JLabel lblCiudad = new JLabel("Ciudad");
 lblCiudad.setBounds(51, 82, 46, 14);
@@ -462,7 +478,7 @@ textField_PrecioAloj.setBounds(179, 122, 178, 20);
 panel_Alojamiento.add(textField_PrecioAloj);
 
 
-JComboBox comboBox_TipoDorm = new JComboBox();
+comboBox_TipoDorm = new JComboBox();
 comboBox_TipoDorm.setToolTipText("Vuelo\r\nHotel\r\nActividad\r\n");
 comboBox_TipoDorm.setBounds(179, 36, 178, 22);
 panel_Alojamiento.add(comboBox_TipoDorm);
@@ -473,12 +489,12 @@ btnBuscAloj.setBounds(388, 98, 146, 23);
 panel_Alojamiento.add(btnBuscAloj);
 
 
-JDateChooser dateChooser_EntHotel = new JDateChooser();
+dateChooser_EntHotel = new JDateChooser();
 dateChooser_EntHotel.setBounds(179, 161, 178, 20);
 panel_Alojamiento.add(dateChooser_EntHotel);
 
 
-JDateChooser dateChooser_SalHotel = new JDateChooser();
+dateChooser_SalHotel = new JDateChooser();
 dateChooser_SalHotel.setBounds(179, 206, 178, 20);
 panel_Alojamiento.add(dateChooser_SalHotel);
 
@@ -582,64 +598,122 @@ panel_VueloVuelta.setVisible(true);
 
 
 }
-
 protected void guardarEvento() {
-// TODO Auto-generated method stub
-if (!validarCampos()) {
-       return;
-   }
+    // Validar campos antes de continuar
+    if (!validarCampos()) {
+        return;
+    }
 
-   String nombreEvento = textField_NombreEven.getText().trim();
-   String tipoEvento = comboBox_TipoEven.getSelectedItem().toString();
-   
-   String sql = "INSERT INTO eventos (nombre, tipo, aeropuerto_origen, aeropuerto_destino, aerolinea, precio, ciudad, precio_aloj, descripcion, precio_act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-   
-   try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
-        PreparedStatement statement = conexion.prepareStatement(sql)) {
-       
-       statement.setString(1, nombreEvento);
-       statement.setString(2, tipoEvento);
+    String nombreEvento = textField_NombreEven.getText().trim();
+    String tipoEvento = comboBox_TipoEven.getSelectedItem().toString();
+    int idViaje = obtenerIdViaje(); // Método para obtener el ID del viaje actual
 
-       if (tipoEvento.equals("Vuelo")) {
-           statement.setString(3, comboBox_AerOrigen_1.getSelectedItem().toString());
-           statement.setString(4, comboBox_AerDestino.getSelectedItem().toString());
-           statement.setString(6, textField_Aerolinea.getText().trim());
-           statement.setDouble(7, Double.parseDouble(textField_Precio.getText().trim()));
-       } else {
-           statement.setNull(3, java.sql.Types.VARCHAR);
-           statement.setNull(4, java.sql.Types.VARCHAR);
-           statement.setNull(5, java.sql.Types.VARCHAR);
-           statement.setNull(6, java.sql.Types.VARCHAR);
-           statement.setNull(7, java.sql.Types.DOUBLE);
-       }
+    // SQL para insertar el evento
+    String sqlEvento = "INSERT INTO Eventos (Nombre, Tipo, IdViajes) VALUES (?, ?, ?)";
+    String sqlAtributos = "";  // Este se determinará dependiendo del tipo de evento
 
-       if (tipoEvento.equals("Hotel")) {
-           statement.setString(8, textField_Ciudad.getText().trim());
-           statement.setDouble(9, Double.parseDouble(textField_PrecioAloj.getText().trim()));
-       } else {
-           statement.setNull(8, java.sql.Types.VARCHAR);
-           statement.setNull(9, java.sql.Types.DOUBLE);
-       }
+    try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD)) {
+        // Iniciar la transacción
+        conexion.setAutoCommit(false);
 
-       if (tipoEvento.equals("Actividad")) {
-           statement.setString(10, textPaneAct.getText().trim());
-           statement.setDouble(11, Double.parseDouble(textField_PrecioAct.getText().trim()));
-       } else {
-           statement.setNull(10, java.sql.Types.VARCHAR);
-           statement.setNull(11, java.sql.Types.DOUBLE);
-       }
+        try (PreparedStatement statementEvento = conexion.prepareStatement(sqlEvento, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            // Insertar evento en la tabla eventos
+            statementEvento.setString(1, nombreEvento);
+            statementEvento.setString(2, tipoEvento);
+            statementEvento.setInt(3, idViaje); // Asignar el ID del viaje
 
-       int filasInsertadas = statement.executeUpdate();
+            int filasInsertadas = statementEvento.executeUpdate();
 
-       if (filasInsertadas > 0) {
-           JOptionPane.showMessageDialog(null, "Evento guardado correctamente.");
-       } else {
-           JOptionPane.showMessageDialog(null, "Error al guardar el evento.");
-       }
-   } catch (SQLException e) {
-       e.printStackTrace();
-       JOptionPane.showMessageDialog(null, "Error de conexión con la base de datos.");
-   }
+            if (filasInsertadas > 0) {
+                // Obtener la clave primaria generada (IdEventos)
+                ResultSet rs = statementEvento.getGeneratedKeys();
+                if (rs.next()) {
+                    int idEvento = rs.getInt(1); // ID del evento recién insertado
+
+                    // Insertar atributos según el tipo de evento
+                    if (tipoEvento.equals("Vuelo")) {
+                        String tipoVuelo = (String) comboBox_Trayecto.getSelectedItem();  // Obtener el tipo de vuelo (Ida o Ida y vuelta)
+                        sqlAtributos = "INSERT INTO VueloIda (IdViajes, AeropuertoOrigen, AeropuertoDestino, Precio, Aerolinea, FechaSalida, HoraSalida, Duracion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                       
+                        try (PreparedStatement statementVuelo = conexion.prepareStatement(sqlAtributos)) {
+                            statementVuelo.setInt(1, idViaje);
+                            statementVuelo.setString(2, comboBox_AerOrigen_1.getSelectedItem().toString());
+                            statementVuelo.setString(3, comboBox_AerDestino.getSelectedItem().toString());
+                            statementVuelo.setDouble(4, Double.parseDouble(textField_Precio.getText().trim()));
+                            statementVuelo.setInt(5, obtenerIdAerolinea()); // Método para obtener el ID de la aerolínea
+                            statementVuelo.setDate(6, new java.sql.Date(dateChooser_ida.getDate().getTime()));
+                            statementVuelo.setTime(7, java.sql.Time.valueOf(textField_HSalida.getText().trim()));
+                            statementVuelo.setTime(8, java.sql.Time.valueOf(textField_Duracion.getText().trim()));
+                           
+                            statementVuelo.executeUpdate();
+                           
+                            // Si el vuelo es "Ida y vuelta", se insertan más atributos
+                            if (tipoVuelo.equals("Ida y vuelta")) {
+                                sqlAtributos = "INSERT INTO VueloVuelta (ID_VueloIda, IdViajes, AeropuertoOrigen, AeropuertoDestino, Precio, Aerolinea, FechaSalida, HoraSalida, Duracion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                try (PreparedStatement statementVueloVuelta = conexion.prepareStatement(sqlAtributos)) {
+                                    statementVueloVuelta.setInt(1, idEvento); // ID del vuelo de ida
+                                    statementVueloVuelta.setInt(2, idViaje);
+                                    statementVueloVuelta.setString(3, comboBox_AerDestino.getSelectedItem().toString()); // Aeropuerto de regreso
+                                    statementVueloVuelta.setString(4, comboBox_AerOrigen_1.getSelectedItem().toString()); // Aeropuerto de origen
+                                    statementVueloVuelta.setDouble(5, Double.parseDouble(textField_PrecioRegreso.getText().trim())); // Precio de regreso
+                                    statementVueloVuelta.setInt(6, obtenerIdAerolinea()); // ID de la aerolínea
+                                    statementVueloVuelta.setDate(7, new java.sql.Date(dateChooser_idaVuelta.getDate().getTime()));
+                                    statementVueloVuelta.setTime(8, java.sql.Time.valueOf(textField_HVuelta.getText().trim()));
+                                    statementVueloVuelta.setTime(9, java.sql.Time.valueOf(textField_DuracionVuelta.getText().trim()));
+                                   
+                                    statementVueloVuelta.executeUpdate();
+                                }
+                            }
+                        }
+                    } else if (tipoEvento.equals("Alojamiento")) {
+                        sqlAtributos = "INSERT INTO Alojamiento (NombreHotel, Ciudad, Precio, FechaEntrada, FechaSalida, TipoHab, IdEventos) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                        try (PreparedStatement statementHotel = conexion.prepareStatement(sqlAtributos)) {
+                            statementHotel.setString(1, textField_Nombre.getText().trim());
+                            statementHotel.setString(2, textField_Ciudad.getText().trim());
+                            statementHotel.setDouble(3, Double.parseDouble(textField_PrecioAloj.getText().trim()));
+                            statementHotel.setDate(4, new java.sql.Date(dateChooser_EntHotel.getDate().getTime()));
+                            //statementHotel.setDate(5, new java.sql.Date(lblFechSalida_Aloj.getDate().getTime()));
+                            //statementHotel.setString(6, comboBox_TipoHabitacion.getSelectedItem().toString());
+                            //statementHotel.setInt(7, idEvento);
+                            statementHotel.executeUpdate();
+                        }
+                    } else if (tipoEvento.equals("Actividad")) {
+                        sqlAtributos = "INSERT INTO Actividades (IdEventos, Descripcion, Precio_act) VALUES (?, ?, ?)";
+                        try (PreparedStatement statementActividad = conexion.prepareStatement(sqlAtributos)) {
+                            statementActividad.setInt(1, idEvento);
+                            statementActividad.setString(2, textPaneAct.getText().trim());
+                            statementActividad.setDouble(3, Double.parseDouble(textField_PrecioAct.getText().trim()));
+                            statementActividad.executeUpdate();
+                        }
+                    }
+
+                    // Confirmar transacción
+                    conexion.commit();
+                    JOptionPane.showMessageDialog(null, "Evento y atributos guardados correctamente.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar el evento.");
+            }
+        } catch (SQLException e) {
+            conexion.rollback(); // Si ocurre un error, revertir los cambios
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al guardar el evento. Transacción revertida.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error de conexión con la base de datos.");
+    }
+}
+
+// Métodos auxiliares para obtener IDs
+private int obtenerIdViaje() {
+    // Implementar lógica para obtener el ID del viaje actual
+    return 1; // Placeholder
+}
+
+private int obtenerIdAerolinea() {
+    // Implementar lógica para obtener el ID de la aerolínea seleccionada
+    return 1; // Placeholder
 }
 
 private boolean validarCampos() {
@@ -860,4 +934,4 @@ private Color convertirColor(String colorHex) {
 return Color.decode(colorHex);
 }
 
-}  
+}
