@@ -1,0 +1,54 @@
+***** Oferta de Viaje *****
+Agencia ID: 1
+Viaje: Tour por Europa
+Destino: Francia
+Fecha de Salida: 2025-03-15
+Fecha de Regreso: 2025-03-25
+Tipo: Escapadas
+Servicios No incluidos: Comidas
+
+*****Eventos Incluidos:*****
+Evento: Vuelo de Madrid a París
+  Tipo: Vuelo
+  Fecha: 2025-03-15
+  Precio: 100.0€
+  Descripción: Vuelo directo desde Madrid a París para comenzar el tour por Europa
+
+Evento: Alojamiento en París
+  Tipo: Alojamiento
+  Fecha: 2025-03-15
+  Precio: 200.0€
+  Descripción: Hotel de 3 estrellas en el centro de París durante 3 noches
+
+Evento: Vuelo de París a Bruselas
+  Tipo: Vuelo
+  Fecha: 2025-03-16
+  Precio: 80.0€
+  Descripción: Vuelo directo desde París a Bruselas
+
+Evento: Alojamiento en Bruselas
+  Tipo: Alojamiento
+  Fecha: 2025-03-16
+  Precio: 150.0€
+  Descripción: Alojamiento en Bruselas en un hotel de 4 estrellas
+
+Evento: Vuelo de Bruselas a Ámsterdam
+  Tipo: Vuelo
+  Fecha: 2025-03-17
+  Precio: 90.0€
+  Descripción: Vuelo directo desde Bruselas a Ámsterdam
+
+Evento: Alojamiento en Ámsterdam
+  Tipo: Alojamiento
+  Fecha: 2025-03-17
+  Precio: 180.0€
+  Descripción: Hotel de lujo en el centro de Ámsterdam
+
+Evento: Vuelo de Ámsterdam a Berlín
+  Tipo: Vuelo
+  Fecha: 2025-03-18
+  Precio: 120.0€
+  Descripción: Vuelo directo desde Ámsterdam a Berlín
+
+=======================
+Precio Total por Persona: 920.0€

@@ -4,7 +4,7 @@
 	 * 
 	 */
 	
-	public class SQLQueries { 
+	public class SQLQueries {
 			//Selects
 			public static final String SELECT_AGENCIA_USUARIO_CONTRASEÑA ="SELECT * FROM agenciaviajes WHERE Nombre = ? AND Contrasena  = ?";
 			public static final String SELECT_NOMBRE_AGENCIA= "SELECT * FROM agenciaviajes WHERE Nombre = ?";
@@ -29,5 +29,6 @@
 			// para el boton basura de eventos
 			public static final String DELETE_EVENTO= "DELETE FROM Eventos WHERE Nombre = ?";
 			public static final String DELETE_ALOJA_PARA_EVENTO="DELETE FROM Alojamiento WHERE IdEventos IN (SELECT IdEventos FROM Eventos WHERE Nombre = ?)";
+			
 	
 	}

@@ -1,4 +1,4 @@
-package vista;
+package modelo_Vista;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -16,6 +16,7 @@ import javax.swing.event.DocumentListener;
 
 import modelo_BDUtils.BDUtils;
 import modelo_BDUtils.SQLQueries;
+import modelo_Gestor.GestorAgencia;
 import modelo_Pojos.Agencia;
 
 import javax.swing.JRadioButton;
@@ -46,7 +47,7 @@ private JLabel lbl_contr ;
 private Color colorSeleccionado;
 private JLabel lbl_nombreError;
 private Agencia agencia;
-
+GestorAgencia conexion = new  GestorAgencia();
 
 
 /**
@@ -93,7 +94,7 @@ private Agencia agencia;
 	
 	lbl_nombreError = new JLabel("");
 	lbl_nombreError.setForeground(Color.RED);
-	lbl_nombreError.setBounds(148, 11, 234, 14);
+	lbl_nombreError.setBounds(148, 11, 341, 14);
 	panel.add(lbl_nombreError);
 	
 	textfield_nombre = new JTextField();
@@ -186,98 +187,14 @@ private Agencia agencia;
 		btn_guardar.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		//-----------Variables------------------
-		
-		
-		añadirNuevaAgencia();
-	}
-	private void añadirNuevaAgencia() {
-		   // Obtener valores del formulario
-		String agenNuevo = textfield_nombre.getText().trim();  // Nombre de la agencia
-		String numEmpStr = comboBox_empleados.getSelectedItem().toString();
-		int numEmp = 0; // Valor por defecto si no se selecciona nada
-		
-		// Convertir número de empleados
-		if (numEmpStr.contains("2 y 10")) {
-		   numEmp = 2;
-		} else if (numEmpStr.contains("10 y 100")) {
-		   numEmp = 10;
-		} else if (numEmpStr.contains("100 y 1000")) {
-		   numEmp = 100;
-		}
-		
-		String tipoAgen = comboBox_tipoAgencia.getSelectedItem().toString();  // Tipo de agencia
-		String contr = new String(passwordField.getPassword());  // Contraseña
-		String urlLogo = textField_logo.getText().trim();  // URL del logo
-		
-		// Validación de campos obligatorios
-		if (agenNuevo.isEmpty() || numEmp == 0 || tipoAgen.isEmpty() || contr.isEmpty() || colorSeleccionado == null) {
-		   JOptionPane.showMessageDialog(panel, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
-		   return;
-		}
-		
-		// Validación de URL del logo
-		/*
-		*
-		* */if (!esUrlValida(urlLogo)) {
-		   JOptionPane.showMessageDialog(panel, "La URL del logo no es válida. Asegúrese de que sea una URL válida (ejemplo: http://www.ejemplo.com).", "Error", JOptionPane.ERROR_MESSAGE);
-		   return;
-		}
-		
-		Connection conexion = null;
-		PreparedStatement sentencia = null;
-		
-		try {
-		   // Conexión a la base de datos
-		   Class.forName(BDUtils.DRIVER);
-		   conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
-		
-		   // Consulta SQL
-		   String sql = SQLQueries.INSERT_NUEVA_AGENCIA;
-		   sentencia = conexion.prepareStatement(sql);
-		
-		   // Asignar parámetros a la consulta
-		   sentencia.setString(1, agenNuevo);  // Nombre
-		   sentencia.setString(2, urlLogo);  // Logo
-		   sentencia.setString(3, "#" + Integer.toHexString(colorSeleccionado.getRGB()).substring(2)); // Color en hexadecimal
-		   sentencia.setInt(4, numEmp);
-		   sentencia.setString(5, tipoAgen);  // Tipo de agencia
-		   sentencia.setString(6, contr);  // Contraseña
-		
-		   // Ejecutar la consulta
-		   int datosInsertados = sentencia.executeUpdate();
-		
-		   if (datosInsertados > 0) {
-		       JOptionPane.showMessageDialog(panel, "Agencia añadida correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-		       setVisible(false);
-		       Login login = new Login();
-		login.setVisible(true);
-		
-		   } else {
-		       JOptionPane.showMessageDialog(panel, "No se pudo añadir la agencia.", "Error", JOptionPane.ERROR_MESSAGE);
-		   }
-		
-		} catch (SQLException ex) {
-		   ex.printStackTrace();
-		   JOptionPane.showMessageDialog(panel, "Error al ejecutar la consulta SQL: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (Exception ex) {
-		   ex.printStackTrace();
-		   JOptionPane.showMessageDialog(panel, "Error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-		   // Cerrar recursos
-		   try {
-		       if (sentencia != null) sentencia.close();
-		       if (conexion != null) conexion.close();
-		   } catch (SQLException ex) {
-		       ex.printStackTrace();
-		   }
-		}
-		}
-		
-		private boolean esUrlValida(String urlLogo) {
-		// TODO Auto-generated method stub
-		return true;
-		}
-		
+			String agenNuevo = textfield_nombre.getText().trim();  // Nombre de la agencia
+			String numEmpStr = comboBox_empleados.getSelectedItem().toString();
+			int numEmp = 0; // Valor por defecto si no se selecciona nada
+			String tipoAgen = comboBox_tipoAgencia.getSelectedItem().toString();  // Tipo de agencia
+			String contr = new String(passwordField.getPassword());  // Contraseña
+			String urlLogo = textField_logo.getText().trim();  // URL del logo
+		    conexion.añadirNuevaAgencia(agenNuevo,numEmpStr,numEmp,tipoAgen,contr,urlLogo,colorSeleccionado,panel);
+	    }
 		});
 		btn_guardar.setBounds(208, 300, 89, 23);
 		panel.add(btn_guardar);
@@ -294,7 +211,7 @@ private Agencia agencia;
 		btn_cancelar.setBounds(340, 300, 89, 23);
 		panel.add(btn_cancelar);
 		
-		   lbl_contr = new JLabel("Crea una contraseña:");
+		lbl_contr = new JLabel("Crea una contraseña:");
 		lbl_contr.setForeground(Color.WHITE);
 		lbl_contr.setBounds(340, 59, 127, 14);
 		panel.add(lbl_contr);
@@ -304,44 +221,19 @@ private Agencia agencia;
 		panel.add(passwordField);
 		
 		textfield_nombre.getDocument().addDocumentListener(new DocumentListener() {
-		  @Override
-		           public void insertUpdate(DocumentEvent e) {
-		               verificarNombre();
-		           }
-		           @Override
-		           public void removeUpdate(DocumentEvent e) {
-		               verificarNombre();
-		           }
-		           @Override
-		           public void changedUpdate(DocumentEvent e) {
-		               verificarNombre();
-		           }
-		       });
-}
+			  @Override
+			           public void insertUpdate(DocumentEvent e) {
+			               conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
+			           }
+			           @Override
+			           public void removeUpdate(DocumentEvent e) {
+			        	   conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
+			           }
+			           @Override
+			           public void changedUpdate(DocumentEvent e) {
+			        	   conexion.verificarNombre(textfield_nombre,lbl_nombreError, btn_guardar);
+			           }
+			       });
+	}
 
- private void verificarNombre() {
-    String nombreAgencia = textfield_nombre.getText().trim();
-       if (nombreAgencia.isEmpty()) {
-        lbl_nombreError.setText("");
-           return;
-       }
-       
-       try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
-            PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM agenciaviajes WHERE Nombre = ?")) {
-           consulta.setString(1, nombreAgencia);
-           try (ResultSet resultado = consulta.executeQuery()) {
-               if (resultado.next() && resultado.getInt(1) > 0) {
-            	   
-                lbl_nombreError.setText("El nombre ya existe en la base de datos.");
-               } else {
-                lbl_nombreError.setText("");
-               }
-           }
-       } catch (SQLException ex) {
-           ex.printStackTrace();
-       }
-
-
-
-}
 }

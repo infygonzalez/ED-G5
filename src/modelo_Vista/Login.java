@@ -1,4 +1,4 @@
-package vista;
+package modelo_Vista;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -11,6 +11,8 @@ import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import modelo_BDUtils.BDUtils;
 import modelo_BDUtils.SQLQueries;
+import modelo_Gestor.GestorAgencia;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -24,7 +26,7 @@ public class Login extends JFrame {
     private JPanel contentPane;
     private JTextField textField_usuario;
     private JPasswordField passwordField_contraseña;
-
+    GestorAgencia conexion = new  GestorAgencia();
     /**
      * Create the frame.
      */
@@ -87,7 +89,7 @@ public class Login extends JFrame {
                     lbl_error.setText("Por favor, complete todos los campos.");
                     lbl_error.setVisible(true);
                 } else {
-                    int idAgencia = validarLogin(usu, contr);
+                    int idAgencia = conexion.validarLogin(usu, contr);
                     if (idAgencia != -1) {
                         JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
                         lbl_error.setVisible(false);
@@ -127,43 +129,6 @@ public class Login extends JFrame {
         viajesyEventos.setVisible(true);
     }
 
-    // MÉTODO PARA VALIDAR LOGIN Y DEVOLVER EL idAgencia
-    private int validarLogin(String usu, String contr) {
-        Connection conexion = null;
-        PreparedStatement sentencia = null;
-        ResultSet resultado = null;
-        int idAgencia = -1; // Valor por defecto si no se encuentra
-
-        try {
-            Class.forName(BDUtils.DRIVER);
-            conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
-            String sql = SQLQueries.SELECT_AGENCIA_USUARIO_CONTRASEÑA;
-
-            sentencia = conexion.prepareStatement(sql);
-            sentencia.setString(1, usu);
-            sentencia.setString(2, contr);
-            resultado = sentencia.executeQuery();
-
-            if (resultado.next()) { // Si el usuario y contraseña son correctos
-                idAgencia = resultado.getInt("idAgencia"); // Obtener el ID de la agencia
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error inesperado: " + ex.getMessage());
-        } finally {
-            try {
-                if (resultado != null) resultado.close();
-                if (sentencia != null) sentencia.close();
-                if (conexion != null) conexion.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        return idAgencia; // Devuelve el ID de la agencia (o -1 si no se encontró)
-    }
+   
+    
 }

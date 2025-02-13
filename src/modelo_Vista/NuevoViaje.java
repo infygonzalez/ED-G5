@@ -1,4 +1,4 @@
-package vista;
+package modelo_Vista;
 
 import java.awt.Color; 
 import java.awt.EventQueue; 
@@ -6,6 +6,7 @@ import com.toedter.calendar.JDateChooser;
 
 import modelo_BDUtils.BDUtils;
 import modelo_BDUtils.SQLQueries;
+import modelo_Gestor.GestorViajesyEventos;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -30,6 +31,7 @@ public class NuevoViaje extends JFrame {
 	private JTextField textField_dias;
 	private JTextField textField_servicios;
 	private int idAgencia;
+	GestorViajesyEventos gestor= new GestorViajesyEventos();
 
 
 	/**
@@ -145,55 +147,31 @@ public class NuevoViaje extends JFrame {
 		JButton btn_guardar = new JButton("Guardar");
 		btn_guardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				añadirNuevoViaje();
-			}
-			
-			public void añadirNuevoViaje() { 
-				String NombreViaje = textField_nombre.getText().trim(); // Nombre del viaje
-		        String Tipo = comboBox_tipo.getSelectedItem().toString(); // Tipo de viaje
-		        String Fecha_inicio = dateChooser_inicio.getDateFormatString(); // FECHA INICIO
-		        String Fecha_fin = dateChooser_fin.getDateFormatString(); // FECHA FIN
-		        String dias = textField_dias.getText(); // Total de dias
-		        String Pais = comboBox_paises.getSelectedItem().toString(); // Paises
-		        String Descripcion = textPane_descripcion.getText().trim(); // Descripción
-		        String Servicios = textField_servicios.getText().trim(); // Servicios
-				
-				
-		        // Validar que todos los campos obligatorios estén llenos
-		        if (NombreViaje.isEmpty() || Tipo.isEmpty() || Fecha_inicio.isEmpty() || Fecha_fin.isEmpty() ||
-		            dias.isEmpty() || Pais.isEmpty() || Descripcion.isEmpty() || Servicios.isEmpty()) {
-		            
-		            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos obligatorios.");
-		            return; 
-		        }
-		        
-		        try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD)) {
-		        	try (PreparedStatement viaje = conexion.prepareStatement(SQLQueries.INSERT_NUEVO_VIAJE)) {
-		        		viaje.setString(1, NombreViaje);
-		        		viaje.setString(2, Descripcion);
-		        		viaje.setString(3, Tipo);
-		        		viaje.setString(4, Pais);
-		        		viaje.setDate(5, new java.sql.Date(dateChooser_inicio.getDate().getTime()));
-		        		viaje.setDate(6, new java.sql.Date(dateChooser_fin.getDate().getTime()));
-		        		viaje.setInt(7, Integer.parseInt(dias));  
-		        		viaje.setString(8, Servicios);
-		        		viaje.setInt(9, idAgencia);
-		        	
-		        	
-		        	
-			            int filasInsertadas = viaje.executeUpdate();
-			            
-			            if (filasInsertadas > 0) {
-			                JOptionPane.showMessageDialog(null, "El viaje se ha guardado correctamente.");
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al guardar el viaje.");
-			            }
-		        	}
-		        } catch (SQLException ex) {
-		            ex.printStackTrace();
-		            JOptionPane.showMessageDialog(null, "Error al guardar el viaje.", "Error", JOptionPane.ERROR_MESSAGE);
-		        }
-			}
+				 String nombreViaje = textField_nombre.getText().trim();
+			        String tipo = comboBox_tipo.getSelectedItem().toString();
+			        Date fechaInicio = dateChooser_inicio.getDate();
+			        Date fechaFin = dateChooser_fin.getDate();
+			        String dias = textField_dias.getText();
+			        String pais = comboBox_paises.getSelectedItem().toString();
+			        String descripcion = textPane_descripcion.getText().trim();
+			        String servicios = textField_servicios.getText().trim();
+
+			        // Validaciones
+			        if (nombreViaje.isEmpty() || tipo.isEmpty() || fechaInicio == null || fechaFin == null ||
+			            dias.isEmpty() || pais.isEmpty() || descripcion.isEmpty() || servicios.isEmpty()) {
+			            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+			            return;
+			        }
+
+			        // Validar que fechaInicio no sea mayor a fechaFin
+			        if (fechaInicio.after(fechaFin)) {
+			            JOptionPane.showMessageDialog(null, "La fecha de inicio no puede ser posterior a la de fin.");
+			            return;
+			        }
+
+			        // Llamar al método del gestor
+			        gestor.añadirNuevoViaje(nombreViaje, descripcion, tipo, pais, fechaInicio, fechaFin, Integer.parseInt(dias), servicios, idAgencia);
+			    }	
 		});
 		btn_guardar.setBounds(265, 604, 89, 23);
 		contentPane.add(btn_guardar);
