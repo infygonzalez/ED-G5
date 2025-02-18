@@ -12,12 +12,15 @@
 			public static final String SELECT_EVENTOS_IDVIAJE="SELECT Nombre, Tipo, Precio, Fecha FROM eventos WHERE idViajes = ?";
 			public static final String SELECT_COLORyLogo_IDAGENCIA=" SELECT Logo , ColorMarca FROM agenciaviajes WHERE idAgencia = ? ";
 	        public static final String SELECT_AEROPUERTOS="SELECT Nombre FROM aeropuerto";
+	        public static final String SELECT_IDEVENTOS = "SELECT IdEventos FROM eventos";
 	
 			//Inserts
 			public static final String INSERT_NUEVA_AGENCIA="INSERT INTO agenciaviajes(Nombre, Logo, ColorMarca, NumEmp, Tipo, Contrasena) VALUES (?, ?, ?, ?, ?, ?) ";
 			public static final String INSERT_NUEVO_VIAJE="INSERT INTO viajes(Nombre, Descripcion, Tipo, PaisDestino, Fecha_Inicio, Fecha_Fin, Duracion_dias, ServNoIncluidos, IdAgencia) VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)";
 			public static final String INSERT_NUEVO_EVENTO= "INSERT INTO Eventos (IdEventos, Nombre, Tipo, Precio, Fecha, Descripcion, IdViajes)  VALUES (?, ?, ?, ?, ?, ?, ?)";
-			
+			public static final String INSERT_VUELO_IDA= "INSERT INTO vueloida (ID_VueloIda, IdViajes, AeropuertoOrigen, AeropuertoDestino, Precio, Aerolinea, FechaSalida, HoraSalida, Duracion)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			public static final String INSERT_VUELO_IDA_VUELTA= "INSERT INTO vuelovuelta (ID_VueloVuelta, ID_VueloIda, IdViajes, AeropuertoOrigen, AeropuertoDestino, Precio, Aerolinea, FechaSalida, HoraSalida, Duracion)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			public static final String INSERT_ALOJAMIENTO= "INSERT INTO alojamiento (IdAlojamiento, NombreHotel, Ciudad, Precio, FechaEntrada, FechaSalida, TipoHab, IdEventos)  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			//Deletes
 			// para el boton basura de viajes
 			public static final String DELETE_VIAJE = "delete from viajes where IdViajes=?";

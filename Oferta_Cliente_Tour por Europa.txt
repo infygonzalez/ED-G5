@@ -50,5 +50,5 @@ Evento: Vuelo de Ámsterdam a Berlín
   Precio: 120.0€
   Descripción: Vuelo directo desde Ámsterdam a Berlín
 
-=======================
+==============================================
 Precio Total por Persona: 920.0€

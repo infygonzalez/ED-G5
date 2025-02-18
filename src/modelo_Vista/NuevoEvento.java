@@ -84,6 +84,7 @@ private JPanel panelLogo;
 private int idAgencia;
 
 private JDateChooser dateChooser_ida;
+private JDateChooser dateChooser_FechaAtc;
 
 private JDateChooser dateChooser_idaVuelta;
 private JDateChooser dateChooser_EntHotel;
@@ -121,19 +122,16 @@ textField_NombreEven.getDocument().addDocumentListener(new DocumentListener(){
 
 @Override
 public void insertUpdate(DocumentEvent e) {
-// TODO Auto-generated method stub
 verificarNombre();
 }
 
 @Override
 public void removeUpdate(DocumentEvent e) {
-// TODO Auto-generated method stub
 verificarNombre();
 }
 
 @Override
 public void changedUpdate(DocumentEvent e) {
-// TODO Auto-generated method stub
 verificarNombre();
 }
 
@@ -141,25 +139,25 @@ private void verificarNombre() {
 // TODO Auto-generated method stub
 
 String nombreAgencia = textField_NombreEven.getText().trim();
-     if (nombreAgencia.isEmpty()) {
-     lblNewLabel_Error.setText("");
-         return;
-     }
-   
-     try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
-          PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM agenciaviajes WHERE Nombre = ?")) {
-         consulta.setString(1, nombreAgencia);
-         try (ResultSet resultado = consulta.executeQuery()) {
-             if (resultado.next() && resultado.getInt(1) > 0) {
-           
-             lblNewLabel_Error.setText("El nombre ya existe en la base de datos.");
-             } else {
-             lblNewLabel_Error.setText("");
-             }
-         }
-     } catch (SQLException ex) {
-         ex.printStackTrace();
-     }
+    if (nombreAgencia.isEmpty()) {
+    lblNewLabel_Error.setText("");
+        return;
+    }
+ 
+    try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
+         PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM agenciaviajes WHERE Nombre = ?")) {
+        consulta.setString(1, nombreAgencia);
+        try (ResultSet resultado = consulta.executeQuery()) {
+            if (resultado.next() && resultado.getInt(1) > 0) {
+         
+            lblNewLabel_Error.setText("El nombre ya existe en la base de datos.");
+            } else {
+            lblNewLabel_Error.setText("");
+            }
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
 }
 
 });
@@ -169,14 +167,14 @@ String nombreAgencia = textField_NombreEven.getText().trim();
 JButton btnGuardar = new JButton("Guardar");
 btnGuardar.addActionListener(new ActionListener() {
 public void actionPerformed(ActionEvent e) {
-   if (!validarCampos()) {
-            JOptionPane.showMessageDialog(null, "Por favor, corrija los errores en los campos.");
-         
-        } else {
-         guardarEvento();
-            JOptionPane.showMessageDialog(null, "Datos guardados correctamente.");
-        }
-    }
+  if (!validarCampos()) { // falta ver si esta bien
+           JOptionPane.showMessageDialog(null, "Por favor, corrija los errores en los campos.");
+       
+       } else {
+        guardarEvento(); // falta crearla
+           JOptionPane.showMessageDialog(null, "Datos guardados correctamente.");
+       }
+   }
 
 });
 btnGuardar.setBounds(54, 643, 89, 23);
@@ -209,7 +207,7 @@ comboBox_TipoEven.setToolTipText("");
 comboBox_TipoEven.setBounds(199, 157, 178, 22);
 contentPane.add(comboBox_TipoEven);
 
-  panel_VueloIda = new JPanel();
+ panel_VueloIda = new JPanel();
 panel_VueloIda.setBounds(10, 88, 764, 599);
 contentPane.add(panel_VueloIda);
 panel_VueloIda.setLayout(null);
@@ -344,7 +342,7 @@ JLabel lblPrecioregreso = new JLabel("Precio total");
 lblPrecioregreso.setBounds(0, 130, 91, 14);
 panel_VueloVuelta.add(lblPrecioregreso);
 
- dateChooser_idaVuelta = new JDateChooser();
+dateChooser_idaVuelta = new JDateChooser();
 dateChooser_idaVuelta.setBounds(145, 4, 178, 20);
 panel_VueloVuelta.add(dateChooser_idaVuelta);
 
@@ -354,39 +352,39 @@ panel_VueloIda.add(dateChooser_ida);
 
 // Agregar un PropertyChangeListener para escuchar cambios en las fechas de dateChooser_ida
 dateChooser_ida.addPropertyChangeListener(new PropertyChangeListener() {
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("date".equals(evt.getPropertyName())) {
-            Date fechaIda = dateChooser_ida.getDate(); // Obtener fecha seleccionada en dateChooser_ida (ida)
-            Date fechaVuelta = dateChooser_idaVuelta.getDate(); // Obtener fecha seleccionada en dateChooser_idaVuelta (vuelta)
+   @Override
+   public void propertyChange(PropertyChangeEvent evt) {
+       if ("date".equals(evt.getPropertyName())) {
+           Date fechaIda = dateChooser_ida.getDate(); // Obtener fecha seleccionada en dateChooser_ida (ida)
+           Date fechaVuelta = dateChooser_idaVuelta.getDate(); // Obtener fecha seleccionada en dateChooser_idaVuelta (vuelta)
 
-            // Establecer la fecha mínima en dateChooser_idaVuelta solo si la fecha de ida está seleccionada
-            if (fechaIda != null) {
-                dateChooser_idaVuelta.setMinSelectableDate(fechaIda); // Establecer la fecha mínima en dateChooser_idaVuelta
+           // Establecer la fecha mínima en dateChooser_idaVuelta solo si la fecha de ida está seleccionada
+           if (fechaIda != null) {
+               dateChooser_idaVuelta.setMinSelectableDate(fechaIda); // Establecer la fecha mínima en dateChooser_idaVuelta
 
-                // Si la fecha de vuelta es anterior a la de ida, corregirla
-                if (fechaVuelta != null && fechaVuelta.before(fechaIda)) {
-                    dateChooser_idaVuelta.setDate(fechaIda); // Establecer la fecha de vuelta igual a la de ida
-                }
-            }
-        }
-    }
+               // Si la fecha de vuelta es anterior a la de ida, corregirla
+               if (fechaVuelta != null && fechaVuelta.before(fechaIda)) {
+                   dateChooser_idaVuelta.setDate(fechaIda); // Establecer la fecha de vuelta igual a la de ida
+               }
+           }
+       }
+   }
 });
 
 // Agregar un PropertyChangeListener para escuchar cambios en las fechas de dateChooser_idaVuelta
 dateChooser_idaVuelta.addPropertyChangeListener(new PropertyChangeListener() {
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("date".equals(evt.getPropertyName())) {
-            Date fechaIda = dateChooser_ida.getDate(); // Obtener fecha seleccionada en dateChooser_ida (ida)
-            Date fechaVuelta = dateChooser_idaVuelta.getDate(); // Obtener fecha seleccionada en dateChooser_idaVuelta (vuelta)
+   @Override
+   public void propertyChange(PropertyChangeEvent evt) {
+       if ("date".equals(evt.getPropertyName())) {
+           Date fechaIda = dateChooser_ida.getDate(); // Obtener fecha seleccionada en dateChooser_ida (ida)
+           Date fechaVuelta = dateChooser_idaVuelta.getDate(); // Obtener fecha seleccionada en dateChooser_idaVuelta (vuelta)
 
-            // Si la fecha de vuelta es anterior a la de ida, corregirla
-            if (fechaIda != null && fechaVuelta != null && fechaVuelta.before(fechaIda)) {
-                dateChooser_idaVuelta.setDate(fechaIda); // Establecer la fecha de vuelta igual a la de ida
-            }
-        }
-    }
+           // Si la fecha de vuelta es anterior a la de ida, corregirla
+           if (fechaIda != null && fechaVuelta != null && fechaVuelta.before(fechaIda)) {
+               dateChooser_idaVuelta.setDate(fechaIda); // Establecer la fecha de vuelta igual a la de ida
+           }
+       }
+   }
 });
 
 
@@ -533,176 +531,65 @@ panel_Actividad.setVisible(false);
 
 
 comboBox_TipoEven.addActionListener(new ActionListener() {
-public void actionPerformed(ActionEvent e) {
-String eventoSelect = (String) comboBox_TipoEven.getSelectedItem();
-
-switch (eventoSelect) {
-case "Vuelo":
-panel_Trayecto.setVisible(true);
-panel_VueloIda.setVisible(false);
-panel_VueloVuelta.setVisible(false);
-panel_Alojamiento.setVisible(false);
-panel_Actividad.setVisible(false);
-break;
-
-case "Hotel":
-panel_Alojamiento.setVisible(true);
-panel_Trayecto.setVisible(false);
-panel_VueloIda.setVisible(false);
-panel_VueloVuelta.setVisible(false);
-panel_Actividad.setVisible(false);
-break;
-
-case "Actividad":
-panel_Actividad.setVisible(true);
-panel_Trayecto.setVisible(false);
-panel_VueloIda.setVisible(false);
-panel_VueloVuelta.setVisible(false);
-panel_Alojamiento.setVisible(false);
-
-}
-          }
+	public void actionPerformed(ActionEvent e) {
+		String eventoSelect = (String) comboBox_TipoEven.getSelectedItem();
+		
+		switch (eventoSelect) {
+			case "Vuelo":
+			panel_Trayecto.setVisible(true);
+			panel_VueloIda.setVisible(false);
+			panel_VueloVuelta.setVisible(false);
+			panel_Alojamiento.setVisible(false);
+			panel_Actividad.setVisible(false);
+			break;
+			
+			case "Hotel":
+			panel_Alojamiento.setVisible(true);
+			panel_Trayecto.setVisible(false);
+			panel_VueloIda.setVisible(false);
+			panel_VueloVuelta.setVisible(false);
+			panel_Actividad.setVisible(false);
+			break;
+			
+			case "Actividad":
+			panel_Actividad.setVisible(true);
+			panel_Trayecto.setVisible(false);
+			panel_VueloIda.setVisible(false);
+			panel_VueloVuelta.setVisible(false);
+			panel_Alojamiento.setVisible(false);
+	
+		}
+	}
 
 });
 
 
 
 comboBox_Trayecto.addActionListener(new ActionListener() {
-public void actionPerformed(ActionEvent e) {
-String vueloSelect = (String) comboBox_Trayecto.getSelectedItem();
+	public void actionPerformed(ActionEvent e) {
+		String vueloSelect = (String) comboBox_Trayecto.getSelectedItem();
+		
+		switch (vueloSelect) {
+			case "Ida":
+			panel_Trayecto.setVisible(false);
+			panel_VueloVuelta.setVisible(false);
+			panel_Alojamiento.setVisible(false);
+			panel_Actividad.setVisible(false);
+			panel_VueloIda.setVisible(true);
+			break;
+			
+			case "Ida y vuelta":
+			panel_Trayecto.setVisible(false);
+			panel_Alojamiento.setVisible(false);
+			panel_Actividad.setVisible(false);
+			panel_VueloIda.setVisible(true);
+			panel_VueloVuelta.setVisible(true);
+		
+		}
+	}
 
-switch (vueloSelect) {
-case "Ida":
-panel_Trayecto.setVisible(false);
-panel_VueloVuelta.setVisible(false);
-panel_Alojamiento.setVisible(false);
-panel_Actividad.setVisible(false);
-panel_VueloIda.setVisible(true);
-break;
+});
 
-case "Ida y vuelta":
-panel_Trayecto.setVisible(false);
-panel_Alojamiento.setVisible(false);
-panel_Actividad.setVisible(false);
-panel_VueloIda.setVisible(true);
-panel_VueloVuelta.setVisible(true);
-
-}
-          }
-
-      });
-
-//-------------------------------------------------------------------------------------------------------------------------//
-//----------------------------------------------------VALIDACIONES----------------------------------------------------------
-//--------Validaciones vuelos----------
-
-
-}
-protected void guardarEvento() {
-    // Validar campos antes de continuar
-    if (!validarCampos()) {
-        return;
-    }
-
-    String nombreEvento = textField_NombreEven.getText().trim();
-    String tipoEvento = comboBox_TipoEven.getSelectedItem().toString();
-    int idViaje = obtenerIdViaje(); // Método para obtener el ID del viaje actual
-
-    // SQL para insertar el evento
-    String sqlEvento = "INSERT INTO Eventos (Nombre, Tipo, IdViajes) VALUES (?, ?, ?)";
-    String sqlAtributos = "";  // Este se determinará dependiendo del tipo de evento
-
-    try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD)) {
-        // Iniciar la transacción
-        conexion.setAutoCommit(false);
-
-        try (PreparedStatement statementEvento = conexion.prepareStatement(sqlEvento, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            // Insertar evento en la tabla eventos
-            statementEvento.setString(1, nombreEvento);
-            statementEvento.setString(2, tipoEvento);
-            statementEvento.setInt(3, idViaje); // Asignar el ID del viaje
-
-            int filasInsertadas = statementEvento.executeUpdate();
-
-            if (filasInsertadas > 0) {
-                // Obtener la clave primaria generada (IdEventos)
-                ResultSet rs = statementEvento.getGeneratedKeys();
-                if (rs.next()) {
-                    int idEvento = rs.getInt(1); // ID del evento recién insertado
-
-                    // Insertar atributos según el tipo de evento
-                    if (tipoEvento.equals("Vuelo")) {
-                        String tipoVuelo = (String) comboBox_Trayecto.getSelectedItem();  // Obtener el tipo de vuelo (Ida o Ida y vuelta)
-                        sqlAtributos = "INSERT INTO VueloIda (IdViajes, AeropuertoOrigen, AeropuertoDestino, Precio, Aerolinea, FechaSalida, HoraSalida, Duracion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                       
-                        try (PreparedStatement statementVuelo = conexion.prepareStatement(sqlAtributos)) {
-                            statementVuelo.setInt(1, idViaje);
-                            statementVuelo.setString(2, comboBox_AerOrigen_1.getSelectedItem().toString());
-                            statementVuelo.setString(3, comboBox_AerDestino.getSelectedItem().toString());
-                            statementVuelo.setDouble(4, Double.parseDouble(textField_Precio.getText().trim()));
-                            statementVuelo.setInt(5, obtenerIdAerolinea()); // Método para obtener el ID de la aerolínea
-                            statementVuelo.setDate(6, new java.sql.Date(dateChooser_ida.getDate().getTime()));
-                            statementVuelo.setTime(7, java.sql.Time.valueOf(textField_HSalida.getText().trim()));
-                            statementVuelo.setTime(8, java.sql.Time.valueOf(textField_Duracion.getText().trim()));
-                           
-                            statementVuelo.executeUpdate();
-                           
-                            // Si el vuelo es "Ida y vuelta", se insertan más atributos
-                            if (tipoVuelo.equals("Ida y vuelta")) {
-                                sqlAtributos = "INSERT INTO VueloVuelta (ID_VueloIda, IdViajes, AeropuertoOrigen, AeropuertoDestino, Precio, Aerolinea, FechaSalida, HoraSalida, Duracion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                                try (PreparedStatement statementVueloVuelta = conexion.prepareStatement(sqlAtributos)) {
-                                    statementVueloVuelta.setInt(1, idEvento); // ID del vuelo de ida
-                                    statementVueloVuelta.setInt(2, idViaje);
-                                    statementVueloVuelta.setString(3, comboBox_AerDestino.getSelectedItem().toString()); // Aeropuerto de regreso
-                                    statementVueloVuelta.setString(4, comboBox_AerOrigen_1.getSelectedItem().toString()); // Aeropuerto de origen
-                                    statementVueloVuelta.setDouble(5, Double.parseDouble(textField_PrecioRegreso.getText().trim())); // Precio de regreso
-                                    statementVueloVuelta.setInt(6, obtenerIdAerolinea()); // ID de la aerolínea
-                                    statementVueloVuelta.setDate(7, new java.sql.Date(dateChooser_idaVuelta.getDate().getTime()));
-                                    statementVueloVuelta.setTime(8, java.sql.Time.valueOf(textField_HVuelta.getText().trim()));
-                                    statementVueloVuelta.setTime(9, java.sql.Time.valueOf(textField_DuracionVuelta.getText().trim()));
-                                   
-                                    statementVueloVuelta.executeUpdate();
-                                }
-                            }
-                        }
-                    } else if (tipoEvento.equals("Alojamiento")) {
-                        sqlAtributos = "INSERT INTO Alojamiento (NombreHotel, Ciudad, Precio, FechaEntrada, FechaSalida, TipoHab, IdEventos) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                        try (PreparedStatement statementHotel = conexion.prepareStatement(sqlAtributos)) {
-                            statementHotel.setString(1, textField_Nombre.getText().trim());
-                            statementHotel.setString(2, textField_Ciudad.getText().trim());
-                            statementHotel.setDouble(3, Double.parseDouble(textField_PrecioAloj.getText().trim()));
-                            statementHotel.setDate(4, new java.sql.Date(dateChooser_EntHotel.getDate().getTime()));
-                            //statementHotel.setDate(5, new java.sql.Date(lblFechSalida_Aloj.getDate().getTime()));
-                            //statementHotel.setString(6, comboBox_TipoHabitacion.getSelectedItem().toString());
-                            //statementHotel.setInt(7, idEvento);
-                            statementHotel.executeUpdate();
-                        }
-                    } else if (tipoEvento.equals("Actividad")) {
-                        sqlAtributos = "INSERT INTO Actividades (IdEventos, Descripcion, Precio_act) VALUES (?, ?, ?)";
-                        try (PreparedStatement statementActividad = conexion.prepareStatement(sqlAtributos)) {
-                            statementActividad.setInt(1, idEvento);
-                            statementActividad.setString(2, textPaneAct.getText().trim());
-                            statementActividad.setDouble(3, Double.parseDouble(textField_PrecioAct.getText().trim()));
-                            statementActividad.executeUpdate();
-                        }
-                    }
-
-                    // Confirmar transacción
-                    conexion.commit();
-                    JOptionPane.showMessageDialog(null, "Evento y atributos guardados correctamente.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar el evento.");
-            }
-        } catch (SQLException e) {
-            conexion.rollback(); // Si ocurre un error, revertir los cambios
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al guardar el evento. Transacción revertida.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error de conexión con la base de datos.");
-    }
 }
 
 // Métodos auxiliares para obtener IDs
@@ -711,7 +598,46 @@ private int obtenerIdViaje() {
     return 1; // Placeholder
 }
 
-private int obtenerIdAerolinea() {
+private int obtenerNuevoIdEvento() {
+    Connection conn = null;
+    Statement stmt = null;
+    int nuevoId = 1;
+	try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD);
+	        Statement stmte = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(SQLQueries.SELECT_IDEVENTOS)) {
+		
+		 if (rs.next()) {
+             int ultimoId = rs.getInt(1);
+             nuevoId = (rs.wasNull()) ? 1 : ultimoId + 1; 
+             return nuevoId;
+         }	
+	} catch (SQLException ex) {
+        try {
+            if (conn != null) conn.rollback();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al guardar el evento.");
+    } finally {
+        try {
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+	return nuevoId;
+}
+private int obtenerNuevoIdVueloIda() {
+    // Implementar lógica para obtener el ID de la aerolínea seleccionada
+    return 1; // Placeholder
+}
+private int obtenerNuevoIdVueloVuelta() {
+    // Implementar lógica para obtener el ID de la aerolínea seleccionada
+    return 1; // Placeholder
+}
+private int obtenerNuevoIdAlojamiento() {
     // Implementar lógica para obtener el ID de la aerolínea seleccionada
     return 1; // Placeholder
 }
@@ -816,11 +742,119 @@ private boolean validarCampos() {
 }
 
 
-protected void calcularDias(Date fechaInicio, Date fechaFin) {
-// TODO Auto-generated method stub
-long diferencia = fechaFin.getTime() - fechaInicio.getTime();
-     long dias = diferencia / (1000 * 60 * 60 * 24);
+
+private void guardarEvento() {
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    
+    try (Connection conexion = DriverManager.getConnection(BDUtils.URL, BDUtils.USER, BDUtils.PASSWORD)) {
+        
+        int idEvento = obtenerNuevoIdEvento(); // Método para obtener el nuevo ID de evento
+        int idViaje = obtenerIdViaje();
+        String nombreEvento = textField_NombreEven.getText();
+        String tipoEvento = (String) comboBox_TipoEven.getSelectedItem();
+        double precio = 0;
+        Date fecha = new Date();
+        String descripcion = "";
+        
+        // Insertar en la tabla Eventos
+        stmt = conexion.prepareStatement(SQLQueries.INSERT_NUEVO_EVENTO);
+        stmt.setInt(1, idEvento);
+        stmt.setString(2, nombreEvento);
+        stmt.setString(3, tipoEvento);
+        stmt.setDouble(4, precio);
+        stmt.setDate(5, new java.sql.Date(fecha.getTime()));
+        stmt.setString(6, descripcion);
+        stmt.setInt(7, idViaje);
+        stmt.executeUpdate();
+        
+        // Insertar en la tabla correspondiente según el tipo de evento
+        if (tipoEvento.equals("Vuelo")) {
+            int idVueloIda = obtenerNuevoIdVueloIda();
+            int aeropuertoOrigen = comboBox_AerOrigen_1.getSelectedIndex();
+            int aeropuertoDestino = comboBox_AerDestino.getSelectedIndex();
+            double precioVuelo = Double.parseDouble(textField_Precio.getText());
+            String aerolinea = textField_Aerolinea.getText();
+            Date fechaSalida = dateChooser_ida.getDate();
+            String horaSalida = textField_HSalida.getText();
+            int duracion = Integer.parseInt(textField_Duracion.getText());
+            
+            stmt = conn.prepareStatement(SQLQueries.INSERT_VUELO_IDA);
+            stmt.setInt(1, idVueloIda);
+            stmt.setInt(2, idViaje);
+            stmt.setInt(3, aeropuertoOrigen);
+            stmt.setInt(4, aeropuertoDestino);
+            stmt.setDouble(5, precioVuelo);
+            stmt.setString(6, aerolinea);
+            stmt.setDate(7, new java.sql.Date(fechaSalida.getTime()));
+            stmt.setString(8, horaSalida);
+            stmt.setInt(9, duracion);
+            stmt.executeUpdate();
+            
+            if (comboBox_Trayecto.getSelectedItem().equals("Ida y vuelta")) {
+                int idVueloVuelta = obtenerNuevoIdVueloVuelta();
+                double precioVuelta = Double.parseDouble(textField_PrecioRegreso.getText());
+                String aerolineaVuelta = textField_AerolineaReg.getText();
+                Date fechaVuelta = dateChooser_idaVuelta.getDate();
+                String horaVuelta = textField_HVuelta.getText();
+                int duracionVuelta = Integer.parseInt(textField_DuracionVuelta.getText());
+                
+                stmt = conn.prepareStatement(SQLQueries.INSERT_VUELO_IDA_VUELTA);
+                stmt.setInt(1, idVueloVuelta);
+                stmt.setInt(2, idVueloIda);
+                stmt.setInt(3, idViaje);
+                stmt.setInt(4, aeropuertoOrigen);
+                stmt.setInt(5, aeropuertoDestino);
+                stmt.setDouble(6, precioVuelta);
+                stmt.setString(7, aerolineaVuelta);
+                stmt.setDate(8, new java.sql.Date(fechaVuelta.getTime()));
+                stmt.setString(9, horaVuelta);
+                stmt.setInt(10, duracionVuelta);
+                stmt.executeUpdate();
+            }
+        } else if (tipoEvento.equals("Hotel")) {
+            int idAlojamiento = obtenerNuevoIdAlojamiento();
+            String nombreHotel = textField_Nombre.getText();
+            String ciudad = textField_Ciudad.getText();
+            String tipoDormitorio = (String) comboBox_TipoDorm.getSelectedItem();
+            double precioHotel = Double.parseDouble(textField_PrecioAloj.getText());
+            Date fechaEntrada = dateChooser_EntHotel.getDate();
+            Date fechaSalida = dateChooser_SalHotel.getDate();
+            
+            stmt = conn.prepareStatement(SQLQueries.INSERT_ALOJAMIENTO);
+            stmt.setInt(1, idAlojamiento);
+            stmt.setInt(2, idViaje);
+            stmt.setString(3, nombreHotel);
+            stmt.setString(4, ciudad);
+            stmt.setString(5, tipoDormitorio);
+            stmt.setDouble(6, precioHotel);
+            stmt.setDate(7, new java.sql.Date(fechaEntrada.getTime()));
+            stmt.setDate(8, new java.sql.Date(fechaSalida.getTime()));
+            stmt.executeUpdate();
+        }
+        
+        conn.commit(); // Confirmar transacción
+        JOptionPane.showMessageDialog(null, "Evento guardado correctamente.");
+        
+    } catch (SQLException ex) {
+        try {
+            if (conn != null) conn.rollback(); // Revertir transacción en caso de error
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al guardar el evento.");
+    } finally {
+        try {
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
+
+
 
 public void cargarAeropuertosOrigen() {
     // Ejecutar la consulta SELECT_AEROPUERTOS
