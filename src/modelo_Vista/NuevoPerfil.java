@@ -184,15 +184,15 @@ GestorAgencia conexion = new  GestorAgencia();
 		
 		JButton btn_guardar = new JButton("Guardar");
 		btn_guardar.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			String agenNuevo = textfield_nombre.getText().trim();  // Nombre de la agencia
-			String numEmpStr = comboBox_empleados.getSelectedItem().toString();
-			int numEmp = 0; // Valor por defecto si no se selecciona nada
-			String tipoAgen = comboBox_tipoAgencia.getSelectedItem().toString();  // Tipo de agencia
-			String contr = new String(passwordField.getPassword());  // Contraseña
-			String urlLogo = textField_logo.getText().trim();  // URL del logo
-		    conexion.añadirNuevaAgencia(agenNuevo,numEmpStr,numEmp,tipoAgen,contr,urlLogo,colorSeleccionado,panel);
-	    }
+			public void actionPerformed(ActionEvent e) {
+				String agenNuevo = textfield_nombre.getText().trim();  // Nombre de la agencia
+				String numEmpStr = comboBox_empleados.getSelectedItem().toString();
+				int numEmp = 0; // Valor por defecto si no se selecciona nada
+				String tipoAgen = comboBox_tipoAgencia.getSelectedItem().toString();  // Tipo de agencia
+				String contr = new String(passwordField.getPassword());  // Contraseña
+				String urlLogo = textField_logo.getText().trim();  // URL del logo
+			    conexion.añadirNuevaAgencia(agenNuevo,numEmpStr,numEmp,tipoAgen,contr,urlLogo,colorSeleccionado,panel);
+		    }
 		});
 		btn_guardar.setBounds(208, 300, 89, 23);
 		panel.add(btn_guardar);

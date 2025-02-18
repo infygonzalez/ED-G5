@@ -16,7 +16,7 @@
 			//Inserts
 			public static final String INSERT_NUEVA_AGENCIA="INSERT INTO agenciaviajes(Nombre, Logo, ColorMarca, NumEmp, Tipo, Contrasena) VALUES (?, ?, ?, ?, ?, ?) ";
 			public static final String INSERT_NUEVO_VIAJE="INSERT INTO viajes(Nombre, Descripcion, Tipo, PaisDestino, Fecha_Inicio, Fecha_Fin, Duracion_dias, ServNoIncluidos, IdAgencia) VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)";
-	
+			public static final String INSERT_NUEVO_EVENTO= "INSERT INTO Eventos (IdEventos, Nombre, Tipo, Precio, Fecha, Descripcion, IdViajes)  VALUES (?, ?, ?, ?, ?, ?, ?)";
 			
 			//Deletes
 			// para el boton basura de viajes

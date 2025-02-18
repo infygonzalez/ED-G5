@@ -68,19 +68,20 @@ public class GestorAgencia {
 
 	    // Convertir número de empleados
 	    switch (numEmpStr) {
-	        case "2 y 10":
-	            numEmp = 2;
-	            break;
-	        case "10 y 100":
-	            numEmp = 10;
-	            break;
-	        case "100 y 1000":
-	            numEmp = 100;
-	            break;
-	        default:
-	            JOptionPane.showMessageDialog(panel, "Seleccione un rango válido para el número de empleados.", "Error", JOptionPane.ERROR_MESSAGE);
-	            return;
+		    case "Entre 2 y 10 empleados":
+		        numEmp = 2;
+		        break;
+		    case "Entre 10 y 100 empleados":
+		        numEmp = 10;
+		        break;
+		    case "Entre 100 y 1000 empleados":
+		        numEmp = 100;
+		        break;
+		    default:
+		        JOptionPane.showMessageDialog(panel, "Por favor, selecciona un número de empleados válido.", "Error", JOptionPane.ERROR_MESSAGE);
+		        return; 
 	    }
+
 
 	    // Validación de URL del logo
 	    if (!esUrlValida(urlLogo)) {
